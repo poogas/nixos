@@ -30,7 +30,7 @@
           specialArgs = { inherit inputs stateVersion hostConfig; };
           
           modules = [
-            ./nixos/configuration.nix
+            ./system/configuration.nix
 
             home-manager.nixosModules.home-manager
             {
@@ -40,7 +40,7 @@
               home-manager.users.qwerty =
               (import ./home-manager/home.nix) {
                 inherit stateVersion;
-                hyprland-pkg = inputs.hyprland.packages.${"x86_64-linux"}.hyprland;
+                hyprland-pkg = inputs.hyprland.packages.${hostConfig.system}.hyprland;
               };
 	    }
           ];
