@@ -13,37 +13,44 @@
     };
   };
 
-  # <<< ИЗМЕНЕНИЕ ЗДЕСЬ >>>
-  # Мы добавляем home-manager и hyprland в список переменных,
-  # которые извлекаются из inputs.
   outputs = { self, nixpkgs, home-manager, hyprland, ... }@inputs:
     let
       stateVersion = "25.05";
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems (system: f system);
+      
+      nix-hosts = {
+        "qwerty" = { 
+          system = "x86_64-linux"; 
+        };
+      };
     in
     {
       formatter = forAllSystems (system:
         nixpkgs.legacyPackages.${system}.nixpkgs-fmt
       );
 
-      nixosConfigurations = {
-        qwerty = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          # Мы по-прежнему передаем ВЕСЬ набор inputs в модули, это правильно.
-          specialArgs = { inherit inputs stateVersion; };
+      nixosConfigurations = nixpkgs.lib.mapAttrs (hostname: hostConfig: 
+        nixpkgs.lib.nixosSystem {
+          system = hostConfig.system;
+          specialArgs = { inherit inputs stateVersion hostConfig; };
+          
           modules = [
             ./nixos/configuration.nix
 
-            # Теперь эта строка будет работать, т.к. home-manager в области видимости.
             home-manager.nixosModules.home-manager
             {
+	      home-manager.backupFileExtension = "hm-backup";
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.qwerty = import ./home-manager/home.nix;
-            }
+              home-manager.users.qwerty =
+              (import ./home-manager/home.nix) {
+                inherit stateVersion;
+                hyprland-pkg = inputs.hyprland.packages.${"x86_64-linux"}.hyprland;
+              };
+	    }
           ];
-        };
-      };
+        }
+      ) nix-hosts;
     };
 }

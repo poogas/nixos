@@ -1,12 +1,14 @@
 # nixos/configuration.nix
-{ config, pkgs, stateVersion, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
     ./nvidia.nix
     ./hosts.nix
-    ./hyprland.nix # <<< ДОБАВЛЯЕМ НАШ НОВЫЙ МОДУЛЬ
+    ./hyprland.nix
+
+    inputs.hyprland.nixosModules.default
   ];
 
   # Убеждаемся, что кастомный модуль nvidia включен
@@ -51,8 +53,8 @@
   environment.systemPackages = with pkgs; [
     neovim
     git
-    # telegram-desktop # Он останется, но может потребоваться настройка для Wayland
+    telegram-desktop # Он останется, но может потребоваться настройка для Wayland
   ];
 
-  system.stateVersion = stateVersion;
+  system.stateVersion = "25.05";
 }

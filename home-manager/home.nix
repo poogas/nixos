@@ -1,31 +1,26 @@
 # home-manager/home.nix
+{ stateVersion, hyprland-pkg, ... }:
+
 { config, pkgs, ... }:
 
 {
   home.username = "qwerty";
   home.homeDirectory = "/home/qwerty";
 
-  # Удаляем специфичные для X11 настройки
-  # xresources.properties = { ... }; # <<< ЭТО БОЛЬШЕ НЕ РАБОТАЕТ В WAYLAND
-
-  # Новая секция для Hyprland
   wayland.windowManager.hyprland = {
     enable = true;
-    # Используем тот же пакет, что и в системе для консистентности
-    package = config.programs.hyprland.package;
-    # Дополнительные настройки можно писать прямо здесь
+    package = hyprland-pkg;
+
     settings = {
-      # Переменные окружения для сессии
+      # --- МИНИМАЛЬНАЯ, ГАРАНТИРОВАННО РАБОЧАЯ КОНФИГУРАЦИЯ ---
       env = "XCURSOR_SIZE,24";
 
-      # Устройства ввода
       input = {
         kb_layout = "us,ru";
         kb_options = "grp:alt_shift_toggle";
         follow_mouse = 1;
       };
-      
-      # Основные настройки
+
       general = {
         gaps_in = 5;
         gaps_out = 20;
@@ -35,7 +30,7 @@
         layout = "dwindle";
       };
 
-      # Декорации
+      # Убираем все сомнительные опции. Оставляем только самое базовое.
       decoration = {
         rounding = 10;
         blur = {
@@ -43,107 +38,56 @@
           size = 3;
           passes = 1;
         };
-        drop_shadow = true;
-        shadow_range = 4;
-        shadow_render_power = 3;
-        "col.shadow" = "rgba(1a1a1aee)";
       };
-
-      # Анимации
+      
       animations = {
         enabled = true;
-        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
-        animation = [
-          "windows, 1, 7, myBezier"
-          "windowsOut, 1, 7, default, popin 80%"
-          "border, 1, 10, default"
-          "fade, 1, 7, default"
-          "workspaces, 1, 6, default"
-        ];
       };
 
       # Привязки клавиш
-      "$mainMod" = "SUPER"; # Клавиша Win/Super
+      "$mainMod" = "SUPER";
       bind = [
-        "$mainMod, Q, exec, alacritty" # Открыть терминал
-        "$mainMod, C, killactive,"      # Закрыть активное окно
-        "$mainMod, M, exit,"            # Выйти из Hyprland
-        "$mainMod, E, exec, dolphin"    # Файловый менеджер (установите его, если нужно)
-        "$mainMod, V, togglefloating,"  # Переключить плавающий режим
-        "$mainMod, R, exec, wofi --show drun" # Запустить wofi
-        "$mainMod, P, pseudo,"          # Псевдо-тайлинг
-        "$mainMod, J, togglesplit,"     # Переключить dwindle/master layout
-
-        # Перемещение фокуса
+        "$mainMod, Q, exec, alacritty"
+        "$mainMod, C, killactive,"
+        "$mainMod, M, exit,"
+        "$mainMod, E, exec, dolphin"
+        "$mainMod, V, togglefloating,"
+        "$mainMod, R, exec, wofi --show drun"
+        "$mainMod, P, pseudo,"
+        "$mainMod, J, togglesplit,"
         "$mainMod, left, movefocus, l"
         "$mainMod, right, movefocus, r"
         "$mainMod, up, movefocus, u"
         "$mainMod, down, movefocus, d"
-
-        # Переключение рабочих столов
         "$mainMod, 1, workspace, 1"
         "$mainMod, 2, workspace, 2"
         "$mainMod, 3, workspace, 3"
-
-        # Перемещение окон на рабочие столы
         "$mainMod SHIFT, 1, movetoworkspace, 1"
         "$mainMod SHIFT, 2, movetoworkspace, 2"
         "$mainMod SHIFT, 3, movetoworkspace, 3"
       ];
 
-      # Автозапуск приложений при старте
+      # Автозапуск
       exec-once = [
-        "waybar"                     # Запустить waybar
-        "swayidle -w"                # Запустить swayidle
-        # "swaybg -i path/to/wallpaper" # Установить обои, укажите путь
+        "waybar"
+        "swayidle -w"
       ];
     };
   };
 
-  # Конфигурация Waybar (пример)
+  # Остальные ваши настройки
   programs.waybar.enable = true;
-  # Вы можете настроить его здесь или через home.file, чтобы создать ~/.config/waybar/config
-  # ...
 
-  # Пакеты, которые были у вас, все еще актуальны
   home.packages = with pkgs; [
-    # ... ваши CLI утилиты ...
-    ripgrep jq yq-go eza fzf ...
+    zip xz unzip p7zip ripgrep jq yq-go eza fzf mtr iperf3 dnsutils ldns
+    aria2 socat nmap ipcalc cowsay file which tree gnused gnutar gawk
+    zstd gnupg nix-output-monitor hugo glow btop iotop iftop strace
+    ltrace lsof sysstat lm_sensors ethtool pciutils usbutils
   ];
-  
-  # Остальные программы (git, starship, alacritty) остаются без изменений
-  # basic configuration of git, please change to your own
-  programs.git = {
-    enable = true;
-    userName = "qwerty";
-    userEmail = "temp@qwerty.qq";
-  };
 
-  # starship - an customizable prompt for any shell
-  programs.starship = {
-    enable = true;
-    # custom settings
-    settings = {
-      add_newline = false;
-      aws.disabled = true;
-      gcloud.disabled = true;
-      line_break.disabled = true;
-    };
-  };
+  programs.git = { enable = true; userName = "qwerty"; userEmail = "temp@qwerty.qq"; };
+  programs.starship = { enable = true; settings = { add_newline = false; aws.disabled = true; gcloud.disabled = true; line_break.disabled = true; }; };
+  programs.alacritty = { enable = true; settings = { env.TERM = "xterm-256color"; font = { size = 12; draw_bold_text_with_bright_colors = true; }; scrolling.multiplier = 5; selection.save_to_clipboard = true; }; };
 
-  programs.alacritty = {
-    enable = true;
-    # custom settings
-    settings = {
-      env.TERM = "xterm-256color";
-      font = {
-        size = 12;
-        draw_bold_text_with_bright_colors = true;
-      };
-      scrolling.multiplier = 5;
-      selection.save_to_clipboard = true;
-    };
-  };
-
-  home.stateVersion = stateVersion;
+  home.stateVersion = "25.05";
 }

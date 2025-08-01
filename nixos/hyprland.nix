@@ -1,23 +1,27 @@
 # nixos/hyprland.nix
-{ config, pkgs, inputs, ... }: # Обратите внимание на 'inputs', он пришел из specialArgs
+{ config, pkgs, inputs, ... }:
 
 {
-  # Включаем Hyprland
+  # 1. Включаем Hyprland и основные программы
   programs.hyprland = {
     enable = true;
-    # Используем пакет из flake input для самой свежей версии
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland; 
-    # Отключаем xwayland, если вы уверены, что не будете запускать X11 приложения.
-    # Для начала лучше оставить включенным.
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     xwayland.enable = true;
   };
 
-  # Отключаем GNOME и GDM
-  services.xserver.desktopManager.gnome.enable = false;
-  services.xserver.displayManager.gdm.enable = false;
-  
-  # Включаем Pipewire для аудио
-  # У вас это уже было, но важно убедиться, что оно есть
+  # 2. Настраиваем графический вход через SDDM
+  services.displayManager = {
+    # Отключаем GDM от GNOME
+    gdm.enable = false;
+    # Включаем SDDM
+    sddm = {
+      enable = true;
+      # Запускаем сам SDDM под Wayland для лучшей совместимости
+      wayland.enable = true;
+    };
+  };
+
+  # 4. Настройка звуковой подсистемы
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -26,15 +30,21 @@
     pulse.enable = true;
   };
 
-  # Настройка окружения для Wayland
+
+  # 5. Переменные окружения для Wayland и NVIDIA
   environment.sessionVariables = {
-    # Подсказка для Firefox, чтобы он использовал Wayland
+    # Стандартные переменные Wayland
     MOZ_ENABLE_WAYLAND = "1";
-    # Если вы столкнетесь с проблемами рендеринга в Electron-приложениях
-    # NIXOS_OZONE_WL = "1"; 
+
+    # Переменные, критически важные для NVIDIA
+    LIBVA_DRIVER_NAME = "nvidia";
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    WLR_NO_HARDWARE_CURSORS = "1";
   };
-  
-  # Установка необходимых пакетов для полноценного окружения
+
+
+  # 6. Системные пакеты для окружения Hyprland
   environment.systemPackages = with pkgs; [
     # Утилиты для Wayland
     waybar       # Статус-бар
@@ -46,24 +56,23 @@
     slurp        # Выделение области экрана (для grim)
     wl-clipboard # Утилита для буфера обмена в Wayland
     
-    # Терминал (у вас уже есть alacritty в home-manager, что хорошо)
+    # Терминал
     alacritty
-    
-    # Шрифты, иконки
+
+    # Шрифты и иконки
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
     font-awesome # Для иконок в waybar
   ];
-  
-  # ВАЖНО: Настройка для NVIDIA
-  # Hyprland требует, чтобы DRM modesetting был включен
-  # Ваш модуль nvidia.nix уже делает это с `hardware.nvidia.modesetting.enable = true;`, что отлично!
-  # Но нам также нужно добавить параметр ядра.
-  boot.kernelParams = [ "nvidia-drm.modeset=1" ];
 
-  # Убираем консольный автологин, если он был настроен для tty
-  systemd.services."getty@tty1".enable = true;
-  systemd.services."autovt@tty1".enable = true;
-  services.displayManager.autoLogin.enable = false; # Отключаем автологин GDM
+
+  # 7. Параметры ядра для NVIDIA и сети
+  boot.kernelParams = [ "ipv6.disable=1" "nvidia-drm.modeset=1" ];
+
+
+  # 8. Отключаем текстовые терминалы на главном экране
+  # Теперь их место займет SDDM
+  systemd.services."getty@tty1".enable = false;
+  systemd.services."autovt@tty1".enable = false;
 }
