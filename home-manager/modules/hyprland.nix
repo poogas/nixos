@@ -20,13 +20,19 @@
         "col.inactive_border" = "rgba(595959aa)";
         layout = "dwindle";
       };
+
       decoration = {
         rounding = 10;
-        blur.enable = true;
-        blur.size = 3;
-        blur.passes = 1;
+        blur = {
+          enabled = true;
+          size = 3;
+          passes = 1;
+        };
+
       };
+
       animations.enabled = true;
+
       "$mainMod" = "SUPER";
       bind = [
         "$mainMod, Q, exec, alacritty"
