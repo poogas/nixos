@@ -2,10 +2,10 @@
 
 {
   imports = [
-    ./hardware-configuration.nix
-    ./nvidia.nix
-    ./hosts.nix
-    ./hyprland.nix
+    ./modules/hardware-configuration.nix
+    ./modules/nvidia.nix
+    ./modules/hosts.nix
+    ./modules/hyprland.nix
 
     inputs.hyprland.nixosModules.default
   ];
