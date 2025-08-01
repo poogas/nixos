@@ -1,7 +1,4 @@
-# home-manager/home.nix
-{ stateVersion, hyprland-pkg, ... }:
-
-{ config, pkgs, ... }:
+{ config, pkgs, homeStateVersion, hyprland-pkg, ... }:
 
 {
   home.username = "qwerty";
@@ -89,5 +86,5 @@
   programs.starship = { enable = true; settings = { add_newline = false; aws.disabled = true; gcloud.disabled = true; line_break.disabled = true; }; };
   programs.alacritty = { enable = true; settings = { env.TERM = "xterm-256color"; font = { size = 12; draw_bold_text_with_bright_colors = true; }; scrolling.multiplier = 5; selection.save_to_clipboard = true; }; };
 
-  home.stateVersion = "25.05";
+  home.stateVersion = homeStateVersion;
 }

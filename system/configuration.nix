@@ -1,5 +1,4 @@
-# nixos/configuration.nix
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, stateVersion, ... }:
 
 {
   imports = [
@@ -52,5 +51,5 @@
     telegram-desktop 
   ];
 
-  system.stateVersion = "25.05";
+  system.stateVersion = stateVersion;
 }
