@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, stateVersion, ... }:
+{ config, pkgs, inputs, username, stateVersion, ... }:
 
 {
   imports = [
@@ -17,7 +17,7 @@
   boot.loader.systemd-boot.configurationLimit = 10;
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
-  nix.settings.trusted-users = [ "root" "qwerty" ];
+  nix.settings.trusted-users = [ "root" username ];
 
   nix = {
     settings.auto-optimise-store = true;
@@ -35,9 +35,9 @@
   time.timeZone = "Europe/Volgograd";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  users.users.qwerty = {
+  users.users."${username}" = {
     isNormalUser = true;
-    description = "qwerty";
+    description = username;
     extraGroups = [ "networkmanager" "wheel" "audio" "video" ];
     shell = pkgs.bash;
   };

@@ -1,8 +1,8 @@
-{ config, pkgs, homeStateVersion, hyprland-pkg, ... }:
+{ config, pkgs, username, homeStateVersion, hyprland-pkg, ... }:
 
 {
-  home.username = "qwerty";
-  home.homeDirectory = "/home/qwerty";
+  home.username = username;
+  home.homeDirectory = "/home/${username}";
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -82,7 +82,7 @@
     ltrace lsof sysstat lm_sensors ethtool pciutils usbutils
   ];
 
-  programs.git = { enable = true; userName = "qwerty"; userEmail = "temp@qwerty.qq"; };
+  programs.git = { enable = true; userName = username; userEmail = "temp@${username}.qq"; };
   programs.starship = { enable = true; settings = { add_newline = false; aws.disabled = true; gcloud.disabled = true; line_break.disabled = true; }; };
   programs.alacritty = { enable = true; settings = { env.TERM = "xterm-256color"; font = { size = 12; draw_bold_text_with_bright_colors = true; }; scrolling.multiplier = 5; selection.save_to_clipboard = true; }; };
 
