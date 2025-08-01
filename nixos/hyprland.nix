@@ -68,7 +68,7 @@
 
 
   # 7. Параметры ядра для NVIDIA и сети
-  boot.kernelParams = [ "ipv6.disable=1" "nvidia-drm.modeset=1" ];
+  # boot.kernelParams = [ "ipv6.disable=1" "nvidia-drm.modeset=1" "net.ipv4.tcp_window_scaling=0" "net.ipv4.ip_no_pmtu_disc=1" ];
 
 
   # 8. Отключаем текстовые терминалы на главном экране

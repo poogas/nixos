@@ -16,8 +16,6 @@
   outputs = { self, nixpkgs, home-manager, hyprland, ... }@inputs:
     let
       stateVersion = "25.05";
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
-      forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems (system: f system);
       
       nix-hosts = {
         "qwerty" = { 
@@ -26,10 +24,6 @@
       };
     in
     {
-      formatter = forAllSystems (system:
-        nixpkgs.legacyPackages.${system}.nixpkgs-fmt
-      );
-
       nixosConfigurations = nixpkgs.lib.mapAttrs (hostname: hostConfig: 
         nixpkgs.lib.nixosSystem {
           system = hostConfig.system;

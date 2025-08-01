@@ -11,49 +11,45 @@
     inputs.hyprland.nixosModules.default
   ];
 
-  # Убеждаемся, что кастомный модуль nvidia включен
   drivers.nvidia.enable = true;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.trusted-users = [ "root" "qwerty" ];
+
+  nix = {
+    settings.auto-optimise-store = true;
+
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 14d";
+    };
+  };
 
   networking.hostName = "qwerty";
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Volgograd";
   i18n.defaultLocale = "en_US.UTF-8";
-  # i18n.extraLocaleSettings = { ... }; # Это можно оставить
-
-  # --- УДАЛЯЕМ СЛЕДУЮЩИЕ СТРОКИ, т.к. они переехали в hyprland.nix или больше не нужны ---
-  # services.xserver.enable = true; # Hyprland сам управляет этим
-  # services.xserver.displayManager.gdm.enable = true;
-  # services.xserver.desktopManager.gnome.enable = true;
-  # services.xserver.xkb = { ... }; # Настройка клавиатуры будет в Hyprland
-  # services.printing.enable = true; # Можно оставить, если нужно
-  # services.pulseaudio.enable = false;
-  # security.rtkit.enable = true;
-  # services.pipewire = { ... };
-  # --------------------------------------------------------------------------------------
 
   users.users.qwerty = {
     isNormalUser = true;
     description = "qwerty";
     extraGroups = [ "networkmanager" "wheel" "audio" "video" ];
     shell = pkgs.bash;
-    # createHome, home, group - можно убрать, NixOS сделает это по умолчанию с isNormalUser
   };
 
   programs.firefox.enable = true;
   nixpkgs.config.allowUnfree = true;
 
-  # Системные пакеты теперь лучше определять в hyprland.nix
-  # или оставить здесь только то, что не относится к GUI
   environment.systemPackages = with pkgs; [
     neovim
     git
-    telegram-desktop # Он останется, но может потребоваться настройка для Wayland
+    telegram-desktop 
   ];
 
   system.stateVersion = "25.05";
