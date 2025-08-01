@@ -30,6 +30,7 @@
 
           specialArgs = {
             inherit inputs;
+	    hostname = hostname;
 	    username = hostConfig.username;
             stateVersion = hostConfig.systemStateVersion;
           };

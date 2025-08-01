@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, username, stateVersion, ... }:
+{ config, pkgs, inputs, hostname, username, stateVersion, ... }:
 
 {
   imports = [
@@ -29,7 +29,7 @@
     };
   };
 
-  networking.hostName = "qwerty";
+  networking.hostName = hostname;
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Volgograd";
