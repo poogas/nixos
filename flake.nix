@@ -11,6 +11,7 @@
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    fabric.url = "github:Fabric-Development/fabric";
   };
 
   outputs = { self, nixpkgs, home-manager, hyprland, ... }@inputs:
@@ -37,6 +38,12 @@
 
           modules = [
             ./system/configuration.nix
+
+            ({ config, pkgs, ... }: {
+              nixpkgs.overlays = [
+                inputs.fabric.overlays.default
+              ];
+            })
 
             home-manager.nixosModules.home-manager
             {
