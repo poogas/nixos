@@ -13,12 +13,10 @@
       };
 
       listener = [
-        # Блокировка через 5 минут
         {
           timeout = 300;
           on-timeout = "${pkgs.hyprlock}/bin/hyprlock";
         }
-        # Выключение экрана через 10 минут
         {
           timeout = 600;
           on-timeout = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
