@@ -2,7 +2,6 @@
 
 let
   # Шаг 1: Определяем все системные C-библиотеки, которые нам нужны.
-  # Этот список мы взяли из default.nix самого Fabric, чтобы обеспечить совместимость.
   gtk-dependencies = with pkgs; [
     gtk3
     gobject-introspection
@@ -47,7 +46,7 @@ in
     git
     telegram-desktop
 
-    # Системные утилиты, необходимые для ax-shell
+    # Утилиты для ax-shell
     brightnessctl
     cava
     cliphist
@@ -71,22 +70,12 @@ in
     webp-pixbuf-loader
     wl-clipboard
 
-    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ ========================
-    # Шаг 3: Создаем скрипт-обертку.
-    # Мы используем `writeShellScriptBin` и двойные кавычки ("...") для правильной
-    # подстановки Nix-переменных в итоговый shell-скрипт.
+    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (v4) =======================
+    # Шаг 3: Создаем скрипт-обертку, используя "..." для правильной подстановки.
     (pkgs.writeShellScriptBin "python-with-ax-shell-env" ''
       #!${pkgs.stdenv.shell}
-
-      # Устанавливаем переменную для поиска .typelib файлов (карты C-библиотек).
-      # Мы добавляем пути к существующей переменной, если она уже задана.
       export GI_TYPELIB_PATH="${pkgs.lib.makeSearchPathOutput "lib/girepository-1.0" gtk-dependencies}''${GI_TYPELIB_PATH:+:}$GI_TYPELIB_PATH"
-
-      # Устанавливаем переменную для поиска данных (иконки, схемы и т.д.)
       export XDG_DATA_DIRS="${pkgs.lib.makeSearchPath "share" gtk-dependencies}''${XDG_DATA_DIRS:+:}$XDG_DATA_DIRS"
-
-      # Запускаем наш специально собранный Python, передавая ему все аргументы.
-      # `exec` заменяет процесс оболочки процессом Python для эффективности.
       exec "${python-with-fabric}/bin/python" "$@"
     '')
     # =======================================================================
