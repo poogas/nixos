@@ -41,7 +41,7 @@
 
             ({ config, pkgs, ... }: {
               nixpkgs.overlays = [
-                inputs.fabric.overlays.default
+                inputs.fabric.overlays.${hostConfig.system}
               ];
             })
 
