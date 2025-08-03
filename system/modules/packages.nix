@@ -38,8 +38,9 @@
     vte #?
     webp-pixbuf-loader #?
     wl-clipboard #+
+    gnome-bluetooth #?
 
-    (python3.withPackages (ps: with ps; [
+    (python312.withPackages (ps: with ps; [
       python-fabric
       pygobject3
       ijson
