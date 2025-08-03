@@ -9,13 +9,9 @@ let
 
     nativeBuildInputs = with pkgs; [ go meson ninja ];
 
-    # === ИСПРАВЛЕНИЕ ЗДЕСЬ ===
     installPhase = ''
-      # Устанавливаем переменные окружения, чтобы Go не пытался писать в /homeless-shelter
       export HOME=$(mktemp -d)
       export GOCACHE=$HOME/go-cache
-
-      # Теперь запускаем команды сборки, которые раньше падали
       meson setup --buildtype=release --prefix=$out build
       meson install -C build
     '';
@@ -39,7 +35,7 @@ in
 {
   # Конфигурация вашей системы...
   programs.firefox.enable = true;
-  gpu-screen-recorder.enable = true;
+  # === ИСПРАВЛЕНИЕ ЗДЕСЬ: Удалена ошибочная строка `gpu-screen-recorder.enable = true;` ===
   nixpkgs.config.allowUnfree = true;
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;
@@ -47,7 +43,9 @@ in
   # Пакеты для установки
   environment.systemPackages = with pkgs; [
     neovim git telegram-desktop
-    brightnessctl cava cliphist gpu-screen-recorder-gtk hypridle hyprlock hyprpicker hyprshot hyprsunset imagemagick libnotify nvtopPackages.nvidia playerctl power-profiles-daemon swappy swww tesseract tmux unzip upower webp-pixbuf-loader wl-clipboard
+    brightnessctl cava cliphist 
+    gpu-screen-recorder-gtk # <--- Этот пакет уже здесь, этого достаточно
+    hypridle hyprlock hyprpicker hyprshot hyprsunset imagemagick libnotify nvtopPackages.nvidia playerctl power-profiles-daemon swappy swww tesseract tmux unzip upower webp-pixbuf-loader wl-clipboard
     python-gtk-env
     fabric-cli-pkg
   ];
