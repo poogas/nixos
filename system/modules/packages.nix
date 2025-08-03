@@ -4,7 +4,7 @@ let
   # Шаг 1: Определяем все системные C-библиотеки, которые нам нужны.
   gtk-dependencies = with pkgs; [
     gtk3
-    gobject-introspection
+    gobject-introspection # Самый важный пакет, чей setup hook нам нужен
     cairo
     gdk-pixbuf
     gtk-layer-shell
@@ -71,22 +71,25 @@ in
     webp-pixbuf-loader
     wl-clipboard
 
-    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (Исправленный синтаксис shell) =======================
-    # Шаг 3: Создаем скрипт-обертку с синтаксически верным экспортом переменных.
-    (pkgs.writeShellScriptBin "python-with-ax-shell-env" ''
-      #!${pkgs.stdenv.shell}
+    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (Nix Setup Hooks) =======================
+    # Шаг 3: Создаем derivation, который позволяет автоматическим хукам NixOS сделать свою работу.
+    (pkgs.stdenv.mkDerivation {
+      name = "python-with-ax-shell-env";
       
-      # Сначала определяем префиксы с путями из Nix
-      GI_TYPELIB_PATH_PREFIX="${lib.makeSearchPath "lib/girepository-1.0" gtk-dependencies}"
-      XDG_DATA_DIRS_PREFIX="${lib.makeSearchPath "share" gtk-dependencies}"
+      # Передаем GTK-зависимости и makeWrapper в nativeBuildInputs.
+      # Это заставит Nix запустить их "setup hooks" на нашем скрипте.
+      nativeBuildInputs = [ pkgs.makeWrapper ] ++ gtk-dependencies;
+      
+      dontUnpack = true; # Нам не нужны исходники, мы просто создаем скрипт.
 
-      # Теперь правильно конструируем итоговую переменную, помещая все в кавычки.
-      export GI_TYPELIB_PATH="$GI_TYPELIB_PATH_PREFIX''${GI_TYPELIB_PATH:+:}$GI_TYPELIB_PATH"
-      export XDG_DATA_DIRS="$XDG_DATA_DIRS_PREFIX''${XDG_DATA_DIRS:+:}$XDG_DATA_DIRS"
-
-      # Запускаем наш специально собранный Python, передавая ему все аргументы.
-      exec "${python-with-fabric}/bin/python" "$@"
-    '')
-    # =================================================================================================
+      # В installPhase мы просто создаем простую обертку.
+      # Автоматические хуки из nativeBuildInputs сами найдут этот скрипт
+      # и добавят в него нужные export'ы переменных окружения.
+      installPhase = ''
+        mkdir -p $out/bin
+        makeWrapper ${python-with-fabric}/bin/python $out/bin/python-with-ax-shell-env
+      '';
+    })
+    # =========================================================================================
   ];
 }
