@@ -12,9 +12,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     fabric.url = "github:Fabric-Development/fabric";
+
+    # ======================== ИСПРАВЛЕННЫЙ БЛОК ========================
+    # Добавляем fabric-cli как "вход", но явно указываем, что это НЕ Flake.
+    fabric-cli = {
+      url = "github:Fabric-Development/fabric-cli";
+      flake = false; # <--- КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ
+    };
+    # =================================================================
   };
 
-  outputs = { self, nixpkgs, home-manager, hyprland, ... }@inputs:
+  # Мы добавляем `fabric-cli` в аргументы функции, чтобы иметь к нему доступ.
+  outputs = { self, nixpkgs, home-manager, hyprland, fabric, fabric-cli, ... }@inputs:
     let
       nix-hosts = {
         "qwerty" = {

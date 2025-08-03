@@ -5,40 +5,43 @@ let
   # --- НАШИ КАСТОМНЫЕ ПАКЕТЫ ---
 
   # 1. Рабочая обертка для Python, которую мы успешно создали.
-  python-gtk-env = pkgs.stdenv.mkDerivation {
-    name = "python-gtk-environment";
-    buildInputs = [
-      (pkgs.python312.withPackages (ps: with ps; [
+  # Она предоставляет команду `python-gtk-env`
+  python-gtk-env =
+    let
+      gtk-dependencies = with pkgs; [
+        gtk3 gobject-introspection cairo gdk-pixbuf gtk-layer-shell
+        libdbusmenu-gtk3 cinnamon-desktop gnome-bluetooth vte librsvg
+      ];
+      python-with-all-packages = pkgs.python312.withPackages (ps: with ps; [
         python-fabric pygobject3 ijson numpy pillow psutil pywayland requests
         setproctitle toml watchdog click pycairo loguru
-      ]))
-    ] ++ (with pkgs; [
-      gtk3 gtk-layer-shell cairo gobject-introspection libdbusmenu-gtk3
-      gdk-pixbuf gnome-bluetooth cinnamon-desktop librsvg vte
-    ]);
-    dontUnpack = true;
-    installPhase = ''
-      mkdir -p $out/bin
-      cat > $out/bin/python-gtk-env << EOF
+      ]);
+    in
+    (pkgs.writeShellScriptBin "python-gtk-env" ''
       #!${pkgs.stdenv.shell}
-      export GI_TYPELIB_PATH="$GI_TYPELIB_PATH"
-      export GDK_PIXBUF_MODULE_FILE="$GDK_PIXBUF_MODULE_FILE"
-      exec ${pkgs.python312.withPackages (ps: with ps; [ python-fabric ])}/bin/python "\$@"
-      EOF
-      chmod +x $out/bin/python-gtk-env
-    '';
-  };
+      export GI_TYPELIB_PATH="${lib.makeSearchPath "lib/girepository-1.0" gtk-dependencies}''${GI_TYPELIB_PATH:+:}$GI_TYPELIB_PATH"
+      export XDG_DATA_DIRS="${lib.makeSearchPath "share" gtk-dependencies}''${XDG_DATA_DIRS:+:}$XDG_DATA_DIRS"
+      exec "${python-with-all-packages}/bin/python" "$@"
+    '');
 
-  # 2. НОВЫЙ пакет для fabric-cli, собранный из Flake input
+  # 2. НОВЫЙ пакет для fabric-cli, собранный из Flake input.
+  # Он предоставляет команду `fabric-cli`.
   fabric-cli-pkg = pkgs.stdenv.mkDerivation {
     pname = "fabric-cli-go";
     version = "git";
-    src = inputs.fabric-cli; # Используем input, хеш не нужен
+
+    # Используем `inputs` из flake.nix, хеш не нужен
+    src = inputs.fabric-cli;
+
+    # Указываем правильные зависимости для сборки на Go
     nativeBuildInputs = with pkgs; [ go meson ninja ];
+
+    # Указываем правильные команды сборки
     installPhase = ''
       meson setup --buildtype=release --prefix=$out build
       meson install -C build
     '';
+
     meta = with lib; {
       description = "A CLI utility for Fabric written in Go";
       homepage = "https://github.com/Fabric-Development/fabric-cli";

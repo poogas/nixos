@@ -52,6 +52,22 @@
         "type": "github"
       }
     },
+    "fabric-cli": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1740615367,
+        "narHash": "sha256-NatSzI0vbUxwvrUQnTwKUan0mZYJpH6oyCRaEr0JCB0=",
+        "owner": "Fabric-Development",
+        "repo": "fabric-cli",
+        "rev": "ed7da8aeed726abb9cb0603efa83b693b91d3159",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Fabric-Development",
+        "repo": "fabric-cli",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -429,6 +445,7 @@
     "root": {
       "inputs": {
         "fabric": "fabric",
+        "fabric-cli": "fabric-cli",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "nixpkgs": "nixpkgs_2"
