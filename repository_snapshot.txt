@@ -1,0 +1,1635 @@
+--- Файл: flake.lock ---
+
+{
+  "nodes": {
+    "aquamarine": {
+      "inputs": {
+        "hyprutils": [
+          "hyprland",
+          "hyprutils"
+        ],
+        "hyprwayland-scanner": [
+          "hyprland",
+          "hyprwayland-scanner"
+        ],
+        "nixpkgs": [
+          "hyprland",
+          "nixpkgs"
+        ],
+        "systems": [
+          "hyprland",
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753216019,
+        "narHash": "sha256-zik7WISrR1ks2l6T1MZqZHb/OqroHdJnSnAehkE0kCk=",
+        "owner": "hyprwm",
+        "repo": "aquamarine",
+        "rev": "be166e11d86ba4186db93e10c54a141058bdce49",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "aquamarine",
+        "type": "github"
+      }
+    },
+    "ax-shell-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1753729651,
+        "narHash": "sha256-OLa16/UGaXxwS7CLVQxVT0lv6ScWvBq9GVbg36uh2jM=",
+        "owner": "Axenide",
+        "repo": "Ax-Shell",
+        "rev": "66143325e19a4e412ddede85b88e799e4d31ec01",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Axenide",
+        "repo": "Ax-Shell",
+        "type": "github"
+      }
+    },
+    "fabric": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "utils": "utils"
+      },
+      "locked": {
+        "lastModified": 1753807046,
+        "narHash": "sha256-7cFgHMZeurf9HcjVdZflvhOuVkGGALUqzLlEDsC2g0c=",
+        "owner": "Fabric-Development",
+        "repo": "fabric",
+        "rev": "02be1e1ea7e99e3cd0d70bed510ceb95813d4a67",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Fabric-Development",
+        "repo": "fabric",
+        "type": "github"
+      }
+    },
+    "fabric-cli": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1740615367,
+        "narHash": "sha256-NatSzI0vbUxwvrUQnTwKUan0mZYJpH6oyCRaEr0JCB0=",
+        "owner": "Fabric-Development",
+        "repo": "fabric-cli",
+        "rev": "ed7da8aeed726abb9cb0603efa83b693b91d3159",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Fabric-Development",
+        "repo": "fabric-cli",
+        "type": "github"
+      }
+    },
+    "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1696426674,
+        "narHash": "sha256-kvjfFW7WAETZlt09AgDn1MrtKzP7t90Vf7vypd3OL1U=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "0f9255e01c2351cc7d116c072cb317785dd33b33",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "gitignore": {
+      "inputs": {
+        "nixpkgs": [
+          "hyprland",
+          "pre-commit-hooks",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1709087332,
+        "narHash": "sha256-HG2cCnktfHsKV0s4XW83gU3F57gaTljL9KNSuG6bnQs=",
+        "owner": "hercules-ci",
+        "repo": "gitignore.nix",
+        "rev": "637db329424fd7e46cf4185293b9cc8c88c95394",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "gitignore.nix",
+        "type": "github"
+      }
+    },
+    "gray": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1734026029,
+        "narHash": "sha256-s9v9fkp+XrKqY81Z7ezxMikwcL4HHS3KvEwrrudJutw=",
+        "owner": "Fabric-Development",
+        "repo": "gray",
+        "rev": "d5a8452c39b074ef6da25be95305a22203cf230e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Fabric-Development",
+        "repo": "gray",
+        "type": "github"
+      }
+    },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1754225444,
+        "narHash": "sha256-mv01SQtqlhBMavc1dgNjgqJw4WfZxy+w3xBgwJU3YmU=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "0de18bd5c6681280d7ae017fa34ffd91bdcf0557",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "hyprcursor": {
+      "inputs": {
+        "hyprlang": [
+          "hyprland",
+          "hyprlang"
+        ],
+        "nixpkgs": [
+          "hyprland",
+          "nixpkgs"
+        ],
+        "systems": [
+          "hyprland",
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753964049,
+        "narHash": "sha256-lIqabfBY7z/OANxHoPeIrDJrFyYy9jAM4GQLzZ2feCM=",
+        "owner": "hyprwm",
+        "repo": "hyprcursor",
+        "rev": "44e91d467bdad8dcf8bbd2ac7cf49972540980a5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "hyprcursor",
+        "type": "github"
+      }
+    },
+    "hyprgraphics": {
+      "inputs": {
+        "hyprutils": [
+          "hyprland",
+          "hyprutils"
+        ],
+        "nixpkgs": [
+          "hyprland",
+          "nixpkgs"
+        ],
+        "systems": [
+          "hyprland",
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1752149140,
+        "narHash": "sha256-gbh1HL98Fdqu0jJIWN4OJQN7Kkth7+rbkFpSZLm/62A=",
+        "owner": "hyprwm",
+        "repo": "hyprgraphics",
+        "rev": "340494a38b5ec453dfc542c6226481f736cc8a9a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "hyprgraphics",
+        "type": "github"
+      }
+    },
+    "hyprland": {
+      "inputs": {
+        "aquamarine": "aquamarine",
+        "hyprcursor": "hyprcursor",
+        "hyprgraphics": "hyprgraphics",
+        "hyprland-protocols": "hyprland-protocols",
+        "hyprland-qtutils": "hyprland-qtutils",
+        "hyprlang": "hyprlang",
+        "hyprutils": "hyprutils",
+        "hyprwayland-scanner": "hyprwayland-scanner",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "pre-commit-hooks": "pre-commit-hooks",
+        "systems": "systems_2",
+        "xdph": "xdph"
+      },
+      "locked": {
+        "lastModified": 1754232492,
+        "narHash": "sha256-gC/6xCLmDlTgUTc3ncfdPBq1TS8v4s4t1drdPi6Cqkg=",
+        "owner": "hyprwm",
+        "repo": "Hyprland",
+        "rev": "549f5e8dff5263530645f3aa6567f6f7a2ddad24",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "Hyprland",
+        "type": "github"
+      }
+    },
+    "hyprland-protocols": {
+      "inputs": {
+        "nixpkgs": [
+          "hyprland",
+          "nixpkgs"
+        ],
+        "systems": [
+          "hyprland",
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1749046714,
+        "narHash": "sha256-kymV5FMnddYGI+UjwIw8ceDjdeg7ToDVjbHCvUlhn14=",
+        "owner": "hyprwm",
+        "repo": "hyprland-protocols",
+        "rev": "613878cb6f459c5e323aaafe1e6f388ac8a36330",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "hyprland-protocols",
+        "type": "github"
+      }
+    },
+    "hyprland-qt-support": {
+      "inputs": {
+        "hyprlang": [
+          "hyprland",
+          "hyprland-qtutils",
+          "hyprlang"
+        ],
+        "nixpkgs": [
+          "hyprland",
+          "hyprland-qtutils",
+          "nixpkgs"
+        ],
+        "systems": [
+          "hyprland",
+          "hyprland-qtutils",
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1749154592,
+        "narHash": "sha256-DO7z5CeT/ddSGDEnK9mAXm1qlGL47L3VAHLlLXoCjhE=",
+        "owner": "hyprwm",
+        "repo": "hyprland-qt-support",
+        "rev": "4c8053c3c888138a30c3a6c45c2e45f5484f2074",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "hyprland-qt-support",
+        "type": "github"
+      }
+    },
+    "hyprland-qtutils": {
+      "inputs": {
+        "hyprland-qt-support": "hyprland-qt-support",
+        "hyprlang": [
+          "hyprland",
+          "hyprlang"
+        ],
+        "hyprutils": [
+          "hyprland",
+          "hyprland-qtutils",
+          "hyprlang",
+          "hyprutils"
+        ],
+        "nixpkgs": [
+          "hyprland",
+          "nixpkgs"
+        ],
+        "systems": [
+          "hyprland",
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753819801,
+        "narHash": "sha256-tHe6XeNeVeKapkNM3tcjW4RuD+tB2iwwoogWJOtsqTI=",
+        "owner": "hyprwm",
+        "repo": "hyprland-qtutils",
+        "rev": "b308a818b9dcaa7ab8ccab891c1b84ebde2152bc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "hyprland-qtutils",
+        "type": "github"
+      }
+    },
+    "hyprlang": {
+      "inputs": {
+        "hyprutils": [
+          "hyprland",
+          "hyprutils"
+        ],
+        "nixpkgs": [
+          "hyprland",
+          "nixpkgs"
+        ],
+        "systems": [
+          "hyprland",
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753622892,
+        "narHash": "sha256-0K+A+gmOI8IklSg5It1nyRNv0kCNL51duwnhUO/B8JA=",
+        "owner": "hyprwm",
+        "repo": "hyprlang",
+        "rev": "23f0debd2003f17bd65f851cd3f930cff8a8c809",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "hyprlang",
+        "type": "github"
+      }
+    },
+    "hyprutils": {
+      "inputs": {
+        "nixpkgs": [
+          "hyprland",
+          "nixpkgs"
+        ],
+        "systems": [
+          "hyprland",
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753800567,
+        "narHash": "sha256-W0xgXsaqGa/5/7IBzKNhf0+23MqGPymYYfqT7ECqeTE=",
+        "owner": "hyprwm",
+        "repo": "hyprutils",
+        "rev": "c65d41d4f4e6ded6fdb9d508a73e2fe90e55cdf7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "hyprutils",
+        "type": "github"
+      }
+    },
+    "hyprwayland-scanner": {
+      "inputs": {
+        "nixpkgs": [
+          "hyprland",
+          "nixpkgs"
+        ],
+        "systems": [
+          "hyprland",
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1751897909,
+        "narHash": "sha256-FnhBENxihITZldThvbO7883PdXC/2dzW4eiNvtoV5Ao=",
+        "owner": "hyprwm",
+        "repo": "hyprwayland-scanner",
+        "rev": "fcca0c61f988a9d092cbb33e906775014c61579d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "hyprwayland-scanner",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1733261153,
+        "narHash": "sha256-eq51hyiaIwtWo19fPEeE0Zr2s83DYMKJoukNLgGGpek=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b681065d0919f7eb5309a93cea2cfa84dec9aa88",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-24.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1753939845,
+        "narHash": "sha256-K2ViRJfdVGE8tpJejs8Qpvvejks1+A4GQej/lBk5y7I=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "94def634a20494ee057c76998843c015909d6311",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "pre-commit-hooks": {
+      "inputs": {
+        "flake-compat": "flake-compat",
+        "gitignore": "gitignore",
+        "nixpkgs": [
+          "hyprland",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1750779888,
+        "narHash": "sha256-wibppH3g/E2lxU43ZQHC5yA/7kIKLGxVEnsnVK1BtRg=",
+        "owner": "cachix",
+        "repo": "git-hooks.nix",
+        "rev": "16ec914f6fb6f599ce988427d9d94efddf25fe6d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cachix",
+        "repo": "git-hooks.nix",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "ax-shell-src": "ax-shell-src",
+        "fabric": "fabric",
+        "fabric-cli": "fabric-cli",
+        "gray": "gray",
+        "home-manager": "home-manager",
+        "hyprland": "hyprland",
+        "nixpkgs": "nixpkgs_2"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
+      "locked": {
+        "lastModified": 1689347949,
+        "narHash": "sha256-12tWmuL2zgBgZkdoB6qXZsgJEH9LR3oUgpaQq2RbI80=",
+        "owner": "nix-systems",
+        "repo": "default-linux",
+        "rev": "31732fcf5e8fea42e59c2488ad31a0e651500f68",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default-linux",
+        "type": "github"
+      }
+    },
+    "utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "xdph": {
+      "inputs": {
+        "hyprland-protocols": [
+          "hyprland",
+          "hyprland-protocols"
+        ],
+        "hyprlang": [
+          "hyprland",
+          "hyprlang"
+        ],
+        "hyprutils": [
+          "hyprland",
+          "hyprutils"
+        ],
+        "hyprwayland-scanner": [
+          "hyprland",
+          "hyprwayland-scanner"
+        ],
+        "nixpkgs": [
+          "hyprland",
+          "nixpkgs"
+        ],
+        "systems": [
+          "hyprland",
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753633878,
+        "narHash": "sha256-js2sLRtsOUA/aT10OCDaTjO80yplqwOIaLUqEe0nMx0=",
+        "owner": "hyprwm",
+        "repo": "xdg-desktop-portal-hyprland",
+        "rev": "371b96bd11ad2006ed4f21229dbd1be69bed3e8a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "xdg-desktop-portal-hyprland",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
+
+
+================================================================================
+
+--- Файл: flake.nix ---
+
+{
+  description = "NixOS configuration";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    fabric.url = "github:Fabric-Development/fabric";
+
+    # ======================== ИСПРАВЛЕННЫЙ БЛОК ========================
+    # Добавляем fabric-cli как "вход", но явно указываем, что это НЕ Flake.
+    fabric-cli = {
+      url = "github:Fabric-Development/fabric-cli";
+      flake = false; # <--- КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ
+    };
+    # =================================================================
+    gray = {
+      url = "github:Fabric-Development/gray";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # Добавляем исходники Ax-Shell как input, который не является Flake
+    ax-shell-src = {
+      url = "github:Axenide/Ax-Shell";
+      flake = false;
+    };
+  };
+
+  # Мы добавляем `fabric-cli` в аргументы функции, чтобы иметь к нему доступ.
+  outputs = { self, nixpkgs, home-manager, hyprland, fabric, fabric-cli, gray, ax-shell-src, ... }@inputs:
+    let
+      nix-hosts = {
+        "qwerty" = {
+          username = "qwerty";
+          system = "x86_64-linux";
+          systemStateVersion = "25.05";
+          homeStateVersion = "25.05";
+        };
+      };
+
+      makeSystem = { hostname, hostConfig }:
+        nixpkgs.lib.nixosSystem {
+          system = hostConfig.system;
+
+          specialArgs = {
+            inherit inputs;
+            hostname = hostname;
+            username = hostConfig.username;
+            stateVersion = hostConfig.systemStateVersion;
+          };
+
+          modules = [
+            ./system/configuration.nix
+
+            ({ config, pkgs, ... }: {
+              nixpkgs.overlays = [
+                inputs.fabric.overlays.${hostConfig.system}.default
+              ];
+            })
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "hm-backup";
+
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                username = hostConfig.username;
+                homeStateVersion = hostConfig.homeStateVersion;
+                hyprland-pkg = inputs.hyprland.packages.${hostConfig.system}.hyprland;
+		ax-shell-src = inputs.ax-shell-src;
+              };
+
+              home-manager.users."${hostConfig.username}" = {
+                imports = [ ./home-manager/home.nix ];
+              };
+            }
+          ];
+        };
+    in
+    {
+      nixosConfigurations = nixpkgs.lib.mapAttrs (hostname: hostConfig:
+        makeSystem { inherit hostname hostConfig; }
+      ) nix-hosts;
+    };
+}
+
+
+================================================================================
+
+--- Файл: create_snapshot.py ---
+
+
+import os
+
+# --- НАСТРОЙКИ ---
+
+# 1. Путь к директории вашего проекта. Точка '.' означает текущую директорию,
+#    где будет запущен скрипт.
+ROOT_DIRECTORY = '.'
+
+# 2. Имя файла, в который будет сохранен результат.
+OUTPUT_FILENAME = 'repository_snapshot.txt'
+
+# 3. Список директорий, которые нужно проигнорировать.
+EXCLUDE_DIRS = {
+    '.git',
+    '.vscode',
+    '__pycache__',
+    'node_modules',
+    'venv',
+    '.idea',
+    'dist',
+    'build'
+}
+
+# 4. Список файлов, которые нужно проигнорировать.
+EXCLUDE_FILES = {
+    '.gitignore',
+    'package-lock.json',
+    'yarn.lock',
+    '.env',
+    OUTPUT_FILENAME  # Исключаем сам выходной файл
+}
+
+# 5. Список расширений файлов, которые нужно проигнорировать (в основном бинарные файлы).
+EXCLUDE_EXTENSIONS = {
+    '.pyc',
+    '.pyo',
+    '.pyd',
+    '.so',
+    '.dll',
+    '.exe',
+    '.o',
+    '.a',
+    '.jpg',
+    '.jpeg',
+    '.png',
+    '.gif',
+    '.bmp',
+    '.tiff',
+    '.ico',
+    '.svg',
+    '.zip',
+    '.tar',
+    '.gz',
+    '.rar',
+    '.pdf',
+    '.doc',
+    '.docx',
+    '.xls',
+    '.xlsx',
+    '.ppt',
+    '.pptx',
+    '.odt',
+    '.ods',
+    '.odp',
+    '.mp3',
+    '.mp4',
+    '.avi',
+    '.mov',
+    '.wav',
+    '.flac',
+    '.db',
+    '.sqlite3'
+}
+
+# --- ОСНОВНОЙ КОД СКРИПТА ---
+
+def create_repository_snapshot():
+    """
+    Рекурсивно обходит директорию проекта и создает единый текстовый файл
+    с путями и содержимым всех неисключенных файлов.
+    """
+    # Открываем файл для записи с кодировкой UTF-8
+    with open(OUTPUT_FILENAME, 'w', encoding='utf-8') as outfile:
+        # Рекурсивно обходим все директории и файлы
+        for dirpath, dirnames, filenames in os.walk(ROOT_DIRECTORY, topdown=True):
+            # Исключаем ненужные директории из дальнейшего обхода
+            # Мы изменяем список dirnames "на лету", чтобы os.walk не заходил в них
+            dirnames[:] = [d for d in dirnames if d not in EXCLUDE_DIRS]
+
+            for filename in filenames:
+                # Пропускаем файлы по имени или расширению
+                if filename in EXCLUDE_FILES:
+                    continue
+                
+                file_extension = os.path.splitext(filename)[1]
+                if file_extension in EXCLUDE_EXTENSIONS:
+                    continue
+
+                full_path = os.path.join(dirpath, filename)
+                
+                # Получаем относительный путь для красивого вывода
+                relative_path = os.path.relpath(full_path, ROOT_DIRECTORY)
+
+                # Записываем заголовок с путем к файлу
+                header = f"--- Файл: {relative_path.replace(os.sep, '/')} ---\n\n"
+                outfile.write(header)
+
+                try:
+                    # Читаем содержимое файла и записываем его
+                    with open(full_path, 'r', encoding='utf-8', errors='ignore') as infile:
+                        outfile.write(infile.read())
+                    # Добавляем отступы для разделения файлов
+                    outfile.write('\n\n' + '='*80 + '\n\n')
+                except Exception as e:
+                    outfile.write(f"Не удалось прочитать файл. Ошибка: {e}\n")
+                    outfile.write('\n\n' + '='*80 + '\n\n')
+
+    print(f"Готово! Снимок репозитория успешно сохранен в файл: {OUTPUT_FILENAME}")
+
+if __name__ == '__main__':
+    create_repository_snapshot()
+
+
+================================================================================
+
+--- Файл: home-manager/home.nix ---
+
+{ username, homeStateVersion, ... }:
+
+{
+  imports = [
+    ./modules
+  ];
+
+  home.username = username;
+  home.homeDirectory = "/home/${username}";
+  home.stateVersion = homeStateVersion;
+}
+
+
+================================================================================
+
+--- Файл: home-manager/modules/alacritty.nix ---
+
+{
+  programs.alacritty = {
+    enable = true;
+    settings = {
+      env.TERM = "xterm-256color";
+      font = { size = 12; draw_bold_text_with_bright_colors = true; };
+      scrolling.multiplier = 5;
+      selection.save_to_clipboard = true;
+    };
+  };
+}
+
+
+================================================================================
+
+--- Файл: home-manager/modules/git.nix ---
+
+{ username, ... }:
+
+{
+  programs.git = {
+    enable = true;
+    userName = username;
+    userEmail = "temp@${username}.qq";
+  };
+}
+
+
+================================================================================
+
+--- Файл: home-manager/modules/starship.nix ---
+
+{
+  programs.starship = {
+    enable = true;
+    settings = {
+      add_newline = false;
+      aws.disabled = true;
+      gcloud.disabled = true;
+      line_break.disabled = true;
+    };
+  };
+}
+
+
+================================================================================
+
+--- Файл: home-manager/modules/hyprlock.nix ---
+
+# /etc/nixos/home-manager/modules/hyprlock.nix
+{ ... }:
+
+{
+  # Создаем файл конфигурации для hyprlock
+  home.file.".config/hypr/hyprlock.conf".text = ''
+    background {
+        path = screenshot
+        blur_passes = 3
+        blur_size = 8
+    }
+
+    input-field {
+        monitor =
+        size = 250, 60
+        outline_thickness = 2
+        dots_size = 0.2 # Scale of input-field dots
+        dots_spacing = 0.2 # Spacing between dots
+        dots_center = true
+        fade_on_empty = false
+        font_color = rgb(202, 211, 245)
+        inner_color = rgb(30, 30, 46)
+        outer_color = rgb(137, 180, 250)
+        rounding = -1
+        placeholder_text = <i>Password...</i>
+    }
+
+    label {
+        monitor =
+        text = cmd[update:1000] echo "<b><big> $(date +"%H:%M") </big></b>"
+        color = rgba(255, 255, 255, 0.8)
+        font_size = 90
+        position = 0, 200
+        halign = center
+        valign = top
+    }
+  '';
+}
+
+
+================================================================================
+
+--- Файл: home-manager/modules/hypridle.nix ---
+
+# /etc/nixos/home-manager/modules/hypridle.nix
+{ pkgs, ... }:
+
+{
+  services.hypridle = {
+    enable = true;
+    settings = {
+      general = {
+        # Теперь просто вызываем hyprlock
+        lock_cmd = "${pkgs.hyprlock}/bin/hyprlock";
+        before_sleep_cmd = "${pkgs.hyprlock}/bin/hyprlock";
+        after_sleep_cmd = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
+      };
+
+      listener = [
+        {
+          timeout = 300;
+          on-timeout = "${pkgs.hyprlock}/bin/hyprlock";
+        }
+        {
+          timeout = 600;
+          on-timeout = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
+          on-resume = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
+        }
+      ];
+    };
+  };
+}
+
+
+================================================================================
+
+--- Файл: home-manager/modules/default.nix ---
+
+{
+  imports = [
+    ./alacritty.nix
+    ./git.nix
+    ./hyprland.nix
+    ./packages.nix
+    ./starship.nix
+    ./hypridle.nix
+    ./hyprlock.nix
+  ];
+}
+
+
+================================================================================
+
+--- Файл: home-manager/modules/packages.nix ---
+
+{ pkgs, ... }:
+
+{
+  home.packages = with pkgs; [
+    zip xz unzip p7zip ripgrep jq yq-go eza fzf mtr iperf3 dnsutils ldns
+    aria2 socat nmap ipcalc cowsay file which tree gnused gnutar gawk
+    zstd gnupg nix-output-monitor hugo glow btop iotop iftop strace
+    ltrace lsof sysstat lm_sensors ethtool pciutils usbutils telegram-desktop neovim
+  ];
+}
+
+
+================================================================================
+
+--- Файл: home-manager/modules/hyprland.nix ---
+
+{ inputs, hyprland-pkg, ax-shell-src, ... }:
+
+{
+  wayland.windowManager.hyprland = {
+    enable = true;
+    package = hyprland-pkg;
+
+    settings = {
+      env = "XCURSOR_SIZE,24";
+      input = {
+        kb_layout = "us,ru";
+        kb_options = "grp:alt_shift_toggle";
+        follow_mouse = 1;
+      };
+      general = {
+        gaps_in = 5;
+        gaps_out = 20;
+        border_size = 2;
+        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+        "col.inactive_border" = "rgba(595959aa)";
+        layout = "dwindle";
+      };
+
+      decoration = {
+        rounding = 10;
+        blur = {
+          enabled = true;
+          size = 3;
+          passes = 1;
+        };
+
+      };
+
+      animations.enabled = true;
+
+      "$mainMod" = "SUPER";
+      bind = [
+        "$mainMod, Q, exec, alacritty"
+        "$mainMod, C, killactive,"
+        "$mainMod, M, exit,"
+        "$mainMod, E, exec, dolphin"
+        "$mainMod, V, togglefloating,"
+        "$mainMod, R, exec, wofi --show drun"
+        "$mainMod, P, pseudo,"
+        "$mainMod, J, togglesplit,"
+        "$mainMod, left, movefocus, l"
+        "$mainMod, right, movefocus, r"
+        "$mainMod, up, movefocus, u"
+        "$mainMod, down, movefocus, d"
+        "$mainMod, 1, workspace, 1"
+        "$mainMod, 2, workspace, 2"
+        "$mainMod, 3, workspace, 3"
+        "$mainMod SHIFT, 1, movetoworkspace, 1"
+        "$mainMod SHIFT, 2, movetoworkspace, 2"
+        "$mainMod SHIFT, 3, movetoworkspace, 3"
+      ];
+      exec-once = [
+        "ax-shell-launcher ${inputs.ax-shell-src}/main.py &> $HOME/ax-shell.log"
+      ];
+    };
+  };
+  #
+  # home.xdg.configFile."Ax-Shell/config.toml".text = builtins.readFile "${ax-shell-src}/config/config.toml";
+  # home.xdg.configFile."Ax-Shell/style.css".text = builtins.readFile "${ax-shell-src}/config/style.css";
+}
+
+
+================================================================================
+
+--- Файл: system/configuration.nix ---
+
+{ config, pkgs, inputs, hostname, username, stateVersion, ... }:
+
+{
+  imports = [
+    ./hardware-configuration.nix
+    ./nvidia.nix
+    ./hosts.nix
+    ./hyprland.nix
+
+    inputs.hyprland.nixosModules.default
+
+    ./modules
+  ];
+
+  drivers.nvidia.enable = true;
+
+  system.stateVersion = stateVersion;
+}
+
+
+================================================================================
+
+--- Файл: system/hardware-configuration.nix ---
+
+# Do not modify this file!  It was generated by ‘nixos-generate-config’
+# and may be overwritten by future invocations.  Please make changes
+# to /etc/nixos/configuration.nix instead.
+{ config, lib, pkgs, modulesPath, ... }:
+
+{
+  imports =
+    [ (modulesPath + "/installer/scan/not-detected.nix")
+    ];
+
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
+
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/bd2e33e4-8e28-4c15-ac28-65f92ac0eeb4";
+      fsType = "btrfs";
+      options = [ "subvol=@" ];
+    };
+
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/1F34-D7C4";
+      fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
+    };
+
+  swapDevices = [ ];
+
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # (the default) this is the recommended approach. When using systemd-networkd it's
+  # still possible to use this option, but it's recommended to use it in conjunction
+  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+  networking.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp2s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+}
+
+
+================================================================================
+
+--- Файл: system/hosts.nix ---
+
+{ config, pkgs, ... }:
+{
+  networking.hosts = {
+    "127.0.0.1" = [
+      "localhost"
+      "only-fans.uk"
+      "only-fans.me"
+      "onlyfans.wtf"
+      "iplogger.org"
+      "wl.gl"
+      "ed.tc"
+      "bc.ax"
+      "maper.info"
+      "2no.co"
+      "yip.su"
+      "iplis.ru"
+      "ezstat.ru"
+      "iplog.co"
+      "grabify.org"
+    ];
+
+    "::1" = [ "ip6-localhost" ];
+
+    "157.240.245.174" = [
+      "instagram.com"
+      "www.instagram.com"
+      "b.i.instagram.com"
+      "z-p42-chat-e2ee-ig.facebook.com"
+    ];
+
+    "3.66.189.153" = [
+      "protonmail.com"
+      "mail.proton.me"
+    ];
+
+    "64.233.164.198" = [
+      "yt3.ggpht.com"
+    ];
+
+    "204.12.192.222" = [
+      "chatgpt.com"
+      "ab.chatgpt.com"
+      "auth.openai.com"
+      "auth0.openai.com"
+      "platform.openai.com"
+      "cdn.oaistatic.com"
+      "files.oaiusercontent.com"
+      "cdn.auth0.com"
+      "tcr9i.chat.openai.com"
+      "webrtc.chatgpt.com"
+      "gemini.google.com"
+      "aistudio.google.com"
+      "generativelanguage.googleapis.com"
+      "aitsandbox-pa.googleapis.com"
+      "proactivebackend-pa.googleapis.com"
+      "o.pki.goog"
+      "labs.google"
+      "notebooklm.google"
+      "notebooklm.google.com"
+      "copilot.microsoft.com"
+      "sydney.bing.com"
+      "edgeservices.bing.com"
+      "api.spotify.com"
+      "xpui.app.spotify.com"
+      "appresolve.spotify.com"
+      "login5.spotify.com"
+      "login.app.spotify.com"
+      "encore.scdn.co"
+      "ap-gew1.spotify.com"
+      "gew1-spclient.spotify.com"
+      "spclient.wg.spotify.com"
+      "api-partner.spotify.com"
+      "aet.spotify.com"
+      "www.spotify.com"
+      "accounts.spotify.com"
+      "open.spotify.com"
+      "claude.ai"
+      "www.notion.so"
+      "www.canva.com"
+      "www.intel.com"
+      "developer.nvidia.com"
+      "builds.parsec.app"
+      "download.jetbrains.com"
+    ];
+
+    "204.12.192.221" = [
+      "rewards.bing.com"
+      "alkalimakersuite-pa.clients6.google.com"
+      "assistant-s3-pa.googleapis.com"
+      "www.dell.com"
+      "truthsocial.com"
+      "static-assets-1.truthsocial.com"
+      "images.tidal.com"
+      "fsu.fa.tidal.com"
+    ];
+
+    "78.40.217.193" = [
+      "xsts.auth.xboxlive.com"
+    ];
+
+    "50.7.87.86" = [
+      "xgpuwebf2p.gssv-play-prod.xboxlive.com"
+    ];
+
+    "50.7.87.85" = [
+      "codeium.com"
+    ];
+
+    "50.7.85.221" = [
+      "datalore.jetbrains.com"
+    ];
+
+    "50.7.87.83" = [
+      "proxy.individual.githubcopilot.com"
+    ];
+
+    "107.150.34.100" = [
+      "plugins.jetbrains.com"
+    ];
+
+    "3.160.212.81" = [
+      "cdn.id.supercell.com"
+    ];
+
+    "18.172.112.81" = [
+      "security.id.supercell.com"
+    ];
+
+    "3.165.113.14" = [
+      "accounts.supercell.com"
+    ];
+
+    "18.66.195.96" = [
+      "game-assets.clashroyaleapp.com"
+    ];
+
+    "51.158.190.98" = [
+      "game.clashroyaleapp.com"
+    ];
+
+    "3.162.38.39" = [
+      "game-assets.clashofclans.com"
+    ];
+
+    "70.34.251.56" = [
+      "gamea.clashofclans.com"
+    ];
+
+    "108.157.194.81" = [
+      "clashofclans.inbox.supercell.com"
+    ];
+
+    "179.43.168.109" = [
+      "game.brawlstarsgame.com"
+    ];
+
+    "18.239.69.129" = [
+      "game-assets.brawlstarsgame.com"
+    ];
+
+    "50.7.85.219" = [
+      "inference.codeium.com"
+      "datalore.jetbrains.com"
+      "www.tiktok.com"
+    ];
+
+    "142.54.189.106" = [
+      "web.archive.org"
+    ];
+  };
+}
+
+
+================================================================================
+
+--- Файл: system/nvidia.nix ---
+
+{ lib, pkgs, config, ... }:
+with lib;
+
+let
+  cfg = config.drivers.nvidia;
+in
+{
+  options.drivers.nvidia = {
+    enable = mkEnableOption "Enable Nvidia Drivers";
+  };
+
+  config = mkIf cfg.enable {
+    services.xserver.videoDrivers = [ "nvidia" ];
+
+    hardware.nvidia = {
+      open = true;
+
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+      modesetting.enable = true;
+      nvidiaSettings = false;
+      nvidiaPersistenced = false;
+
+      powerManagement = {
+        enable = false;
+        finegrained = false;
+      };
+    };
+
+    hardware.graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        vaapiVdpau
+        libvdpau
+        libva
+        vdpauinfo
+      ];
+    };
+  };
+}
+
+
+================================================================================
+
+--- Файл: system/hyprland.nix ---
+
+# nixos/hyprland.nix
+{ config, pkgs, inputs, ... }:
+
+{
+  # 1. Включаем Hyprland и основные программы
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    xwayland.enable = true;
+    withUWSM = true;
+  };
+
+  # 2. Настраиваем графический вход через SDDM
+  services.displayManager = {
+    # Отключаем GDM от GNOME
+    gdm.enable = false;
+    # Включаем SDDM
+    sddm = {
+      enable = true;
+      # Запускаем сам SDDM под Wayland для лучшей совместимости
+      wayland.enable = true;
+    };
+  };
+
+  # 4. Настройка звуковой подсистемы
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+
+  # 5. Переменные окружения для Wayland и NVIDIA
+  environment.sessionVariables = {
+    # Стандартные переменные Wayland
+    MOZ_ENABLE_WAYLAND = "1";
+
+    # Переменные, критически важные для NVIDIA
+    LIBVA_DRIVER_NAME = "nvidia";
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    WLR_NO_HARDWARE_CURSORS = "1";
+  };
+
+
+  # 6. Системные пакеты для окружения Hyprland
+  environment.systemPackages = with pkgs; [
+    # Утилиты для Wayland
+    wofi         # Лаунчер приложений
+    mako         # Демон уведомлений
+    grim         # Создание скриншотов
+    slurp        # Выделение области экрана (для grim)
+    wl-clipboard # Утилита для буфера обмена в Wayland
+
+    # Шрифты и иконки
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-emoji
+    font-awesome # Для иконок в waybar
+  ];
+
+
+  # 7. Параметры ядра для NVIDIA и сети
+  # boot.kernelParams = [ "ipv6.disable=1" "nvidia-drm.modeset=1" "net.ipv4.tcp_window_scaling=0" "net.ipv4.ip_no_pmtu_disc=1" ];
+
+
+  # 8. Отключаем текстовые терминалы на главном экране
+  # Теперь их место займет SDDM
+  systemd.services."getty@tty1".enable = false;
+  systemd.services."autovt@tty1".enable = false;
+}
+
+
+================================================================================
+
+--- Файл: system/modules/boot.nix ---
+
+{
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
+}
+
+
+================================================================================
+
+--- Файл: system/modules/default.nix ---
+
+{
+  imports = [
+    ./boot.nix
+    ./nix.nix
+    ./networking.nix
+    ./localization.nix
+    ./users.nix
+    ./packages.nix
+  ];
+}
+
+
+================================================================================
+
+--- Файл: system/modules/localization.nix ---
+
+{
+  time.timeZone = "Europe/Volgograd";
+  i18n.defaultLocale = "en_US.UTF-8";
+}
+
+
+================================================================================
+
+--- Файл: system/modules/networking.nix ---
+
+{
+  networking.networkmanager.enable = true;
+}
+
+
+================================================================================
+
+--- Файл: system/modules/nix.nix ---
+
+{ username, ... }:
+
+{
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.trusted-users = [ "root" username ];
+
+  nix = {
+    settings.auto-optimise-store = true;
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 14d";
+    };
+  };
+}
+
+
+================================================================================
+
+--- Файл: system/modules/users.nix ---
+
+{ pkgs, username, ... }:
+
+{
+  users.users."${username}" = {
+    isNormalUser = true;
+    description = username;
+    extraGroups = [ "networkmanager" "wheel" "audio" "video" ];
+    shell = pkgs.bash;
+  };
+}
+
+
+================================================================================
+
+--- Файл: system/modules/packages.nix ---
+
+{ pkgs, lib, inputs, ... }:
+
+let
+  # === ШАГ 1: Мы отдельно определяем наши компоненты ===
+
+  # Наше Python-окружение со всеми пакетами.
+  pythonWithAllPackages = pkgs.python311.withPackages (ps: with ps; [
+    # Используем `python-fabric` из оверлея.
+    python-fabric
+    # И все остальные зависимости, включая `pygobject3`, который предоставляет `gi`.
+    pygobject3 ijson numpy pillow psutil pywayland requests
+    setproctitle toml watchdog click pycairo loguru
+  ]);
+
+  # Наши системные C-библиотеки для GTK.
+  gtkLibs = with pkgs; [
+    glib
+    gtk3 gtk-layer-shell cairo gobject-introspection libdbusmenu-gtk3
+    gdk-pixbuf gnome-bluetooth cinnamon-desktop librsvg vte
+  ];
+
+  # === ШАГ 2: Создаем финальный лаунчер с явным указанием ВСЕХ путей ===
+  ax-shell-launcher = pkgs.stdenv.mkDerivation {
+    name = "ax-shell-launcher-the-final-one";
+    
+    # Мы передаем пути как переменные в сам процесс сборки,
+    # чтобы избежать ошибок со скоупом.
+    pyEnvPath = pythonWithAllPackages;
+    axShellSrcPath = inputs.ax-shell-src;
+    # Явно создаем ПРАВИЛЬНЫЙ путь для GI_TYPELIB_PATH.
+    # Эта функция пройдется по всем пакетам в gtkLibs и соберет пути.
+    giTypelibPath = lib.makeSearchPath "lib/girepository-1.0" gtkLibs;
+
+    # Нам не нужно ничего собирать или распаковывать.
+    phases = [ "installPhase" ];
+
+    # В фазе установки мы создаем наш финальный скрипт.
+    installPhase = ''
+      mkdir -p $out/bin
+      cat > $out/bin/ax-shell-launcher << EOF
+      #!${pkgs.stdenv.shell}
+      # === Решаем "Namespace ... not available" ===
+      # Мы явно указываем путь к "словарям" GTK.
+      export GI_TYPELIB_PATH="$giTypelibPath''${GI_TYPELIB_PATH:+:}$GI_TYPELIB_PATH"
+
+      # === Решаем "ModuleNotFoundError" ===
+      # Мы явно указываем путь к нашим Python-пакетам.
+      export PYTHONPATH="$pyEnvPath/lib/python3.11/site-packages"
+
+      # === ВЫЗЫВАЕМ ПРАВИЛЬНЫЙ PYTHON ===
+      # Запускаем python ИЗ НАШЕГО СОБРАННОГО ОКРУЖЕНИЯ.
+      exec $pyEnvPath/bin/python "\$@"
+      EOF
+      chmod +x $out/bin/ax-shell-launcher
+    '';
+  };
+
+  # Остальные ваши пакеты, которые не мешают.
+  fabric-cli-pkg = pkgs.buildGoModule {
+    pname = "fabric-cli-go";
+    version = "git";
+    src = inputs.fabric-cli;
+    vendorHash = "sha256-3ToIL4MmpMBbN8wTaV3UxMbOAcZY8odqJyWpQ7jkXOc=";
+  };
+  zed-sans-font = pkgs.stdenv.mkDerivation rec {
+    pname = "zed-sans";
+    version = "1.2.0";
+    src = pkgs.fetchurl {
+      url = "https://github.com/zed-industries/zed-fonts/releases/download/${version}/zed-sans-${version}.zip";
+      sha256 = "sha256-64YcNcbxY5pnR5P3ETWxNw/+/JvW5ppf9f/6JlnxUME=";
+    };
+    dontUnpack = true;
+    nativeBuildInputs = [ pkgs.unzip ];
+    installPhase = ''
+      mkdir -p $out/share/fonts/opentype
+      unzip -j $src -d $out/share/fonts/opentype
+    '';
+  };
+
+in
+{
+  # --- ОСНОВНАЯ ЧАСТЬ ВАШЕЙ КОНФИГУРАЦИИ ---
+  programs.firefox.enable = true;
+  nixpkgs.config.allowUnfree = true;
+  services.upower.enable = true;
+  services.power-profiles-daemon.enable = true;
+
+  fonts.packages = with pkgs; [
+    noto-fonts-emoji
+    zed-sans-font
+  ];
+
+  environment.systemPackages = with pkgs; [
+    # Зависимости
+    brightnessctl cava cliphist gpu-screen-recorder-gtk hypridle hyprlock
+    hyprpicker hyprshot hyprsunset imagemagick libnotify nvtopPackages.nvidia
+    playerctl power-profiles-daemon swappy swww tesseract tmux unzip upower
+    webp-pixbuf-loader wl-clipboard matugen grimblast
+
+    # Наш финальный собранный пакет
+    ax-shell-launcher
+
+    # Прочие
+    fabric-cli-pkg
+    inputs.gray.packages."x86_64-linux".default
+    wlinhibit
+    uwsm
+  ];
+}
+
+
+================================================================================
+
