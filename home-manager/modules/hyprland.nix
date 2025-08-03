@@ -1,4 +1,4 @@
-{ hyprland-pkg, ... }:
+{ hyprland-pkg, ax-shell-src, ... }:
 
 {
   wayland.windowManager.hyprland = {
@@ -54,7 +54,13 @@
         "$mainMod SHIFT, 2, movetoworkspace, 2"
         "$mainMod SHIFT, 3, movetoworkspace, 3"
       ];
-      exec-once = [ "waybar" "swayidle -w" ];
+      exec-once = [
+        "uwsm --app python-gtk-env ${ax-shell-src}/main.py"
+        "swayidle -w"
+       ];
     };
   };
+
+  home.xdg.configFile."Ax-Shell/config.toml".text = builtins.readFile "${ax-shell-src}/config.toml";
+  home.xdg.configFile."Ax-Shell/style.css".text = builtins.readFile "${ax-shell-src}/style.css";
 }

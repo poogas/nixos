@@ -24,10 +24,15 @@
       url = "github:Fabric-Development/gray";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Добавляем исходники Ax-Shell как input, который не является Flake
+    ax-shell-src = {
+      url = "github:Axenide/Ax-Shell";
+      flake = false;
+    };
   };
 
   # Мы добавляем `fabric-cli` в аргументы функции, чтобы иметь к нему доступ.
-  outputs = { self, nixpkgs, home-manager, hyprland, fabric, fabric-cli, gray, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, hyprland, fabric, fabric-cli, gray, ax-shell-src, ... }@inputs:
     let
       nix-hosts = {
         "qwerty" = {
@@ -69,6 +74,7 @@
                 username = hostConfig.username;
                 homeStateVersion = hostConfig.homeStateVersion;
                 hyprland-pkg = inputs.hyprland.packages.${hostConfig.system}.hyprland;
+		ax-shell-src = inputs.ax-shell-src;
               };
 
               home-manager.users."${hostConfig.username}" = {
