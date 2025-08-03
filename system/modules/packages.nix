@@ -8,7 +8,7 @@ let
     pname = "fabric-cli-go";
     version = "git";
     src = inputs.fabric-cli;
-    vendorHash = "sha256-n6aisDAm3crp2lZqLgDkY7yUPE0m6nZZCEkIcY9BcjA="; # Я вставлю известный рабочий хеш
+    vendorHash = "sha256-3ToIL4MmpMBbN8wTaV3UxMbOAcZY8odqJyWpQ7jkXOc="; # Я вставлю известный рабочий хеш
   };
 
   # 2. НОВЫЙ, ПРАВИЛЬНЫЙ пакет для python-gtk-env, который точно копирует run-widget.nix
