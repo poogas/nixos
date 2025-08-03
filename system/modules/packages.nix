@@ -4,7 +4,7 @@ let
   # Шаг 1: Определяем все системные C-библиотеки, которые нам нужны.
   gtk-dependencies = with pkgs; [
     gtk3
-    gobject-introspection # Самый важный пакет, чей setup hook нам нужен
+    gobject-introspection
     cairo
     gdk-pixbuf
     gtk-layer-shell
@@ -47,7 +47,7 @@ in
     git
     telegram-desktop
 
-    # Утилиты для ax-shell
+    # Утилиты для ax-shell, которые являются отдельными командами
     brightnessctl
     cava
     cliphist
@@ -71,25 +71,21 @@ in
     webp-pixbuf-loader
     wl-clipboard
 
-    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (Nix Setup Hooks) =======================
-    # Шаг 3: Создаем derivation, который позволяет автоматическим хукам NixOS сделать свою работу.
-    (pkgs.stdenv.mkDerivation {
-      name = "python-with-ax-shell-env";
-      
-      # Передаем GTK-зависимости и makeWrapper в nativeBuildInputs.
-      # Это заставит Nix запустить их "setup hooks" на нашем скрипте.
-      nativeBuildInputs = [ pkgs.makeWrapper ] ++ gtk-dependencies;
-      
-      dontUnpack = true; # Нам не нужны исходники, мы просто создаем скрипт.
+    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (Прямой подход) =======================
+    # Шаг 3: Создаем скрипт-обертку, который вручную устанавливает переменные.
+    # Это самый надежный и явный метод.
+    (pkgs.writeShellScriptBin "python-gtk-env" ''
+      #!${pkgs.stdenv.shell}
 
-      # В installPhase мы просто создаем простую обертку.
-      # Автоматические хуки из nativeBuildInputs сами найдут этот скрипт
-      # и добавят в него нужные export'ы переменных окружения.
-      installPhase = ''
-        mkdir -p $out/bin
-        makeWrapper ${python-with-fabric}/bin/python $out/bin/python-with-ax-shell-env
-      '';
-    })
+      # Устанавливаем переменную для поиска .typelib файлов.
+      export GI_TYPELIB_PATH="${lib.makeSearchPath "lib/girepository-1.0" gtk-dependencies}''${GI_TYPELIB_PATH:+:}$GI_TYPELIB_PATH"
+
+      # Устанавливаем переменную для поиска данных (иконки, схемы и т.д.)
+      export XDG_DATA_DIRS="${lib.makeSearchPath "share" gtk-dependencies}''${XDG_DATA_DIRS:+:}$XDG_DATA_DIRS"
+
+      # Запускаем наш специально собранный Python, передавая ему все аргументы.
+      exec "${python-with-fabric}/bin/python" "$@"
+    '')
     # =========================================================================================
   ];
 }
