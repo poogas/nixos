@@ -18,7 +18,7 @@
     let
       nix-hosts = {
         "qwerty" = {
-	  username = "qwerty";
+          username = "qwerty";
           system = "x86_64-linux";
           systemStateVersion = "25.05";
           homeStateVersion = "25.05";
@@ -31,8 +31,8 @@
 
           specialArgs = {
             inherit inputs;
-	    hostname = hostname;
-	    username = hostConfig.username;
+            hostname = hostname;
+            username = hostConfig.username;
             stateVersion = hostConfig.systemStateVersion;
           };
 
@@ -53,7 +53,7 @@
 
               home-manager.extraSpecialArgs = {
                 inherit inputs;
-		username = hostConfig.username;
+                username = hostConfig.username;
                 homeStateVersion = hostConfig.homeStateVersion;
                 hyprland-pkg = inputs.hyprland.packages.${hostConfig.system}.hyprland;
               };
