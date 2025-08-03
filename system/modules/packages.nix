@@ -4,7 +4,7 @@ let
   # Шаг 1: Определяем все системные C-библиотеки, которые нам нужны.
   gtk-dependencies = with pkgs; [
     gtk3
-    gobject-introspection # Пакет, чей setup hook нам нужен
+    gobject-introspection
     cairo
     gdk-pixbuf
     gtk-layer-shell
@@ -12,7 +12,7 @@ let
     cinnamon-desktop
     gnome-bluetooth
     vte
-    librsvg # Добавлено из run-widget.nix для полноты
+    librsvg
   ];
 
   # Шаг 2: Создаем интерпретатор Python со всеми нужными ему Python-библиотеками.
@@ -71,24 +71,22 @@ in
     webp-pixbuf-loader
     wl-clipboard
 
-    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (mkDerivation done right) =======================
-    # Шаг 3: Создаем derivation, который позволяет автоматическим хукам NixOS сделать свою работу.
-    (stdenv.mkDerivation {
-      name = "python-with-ax-shell-env";
+    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (Исправленный синтаксис shell) =======================
+    # Шаг 3: Создаем скрипт-обертку с синтаксически верным экспортом переменных.
+    (pkgs.writeShellScriptBin "python-with-ax-shell-env" ''
+      #!${pkgs.stdenv.shell}
       
-      # Передаем GTK-зависимости в buildInputs. Это позволяет их setup-hook'ам
-      # автоматически обернуть все, что мы создаем в installPhase.
-      nativeBuildInputs = [ makeWrapper ] ++ gtk-dependencies;
-      
-      dontUnpack = true;
+      # Сначала определяем префиксы с путями из Nix
+      GI_TYPELIB_PATH_PREFIX="${lib.makeSearchPath "lib/girepository-1.0" gtk-dependencies}"
+      XDG_DATA_DIRS_PREFIX="${lib.makeSearchPath "share" gtk-dependencies}"
 
-      # В installPhase мы просто создаем скрипт-обертку.
-      # Автоматические хуки сами добавят нужные export'ы переменных окружения.
-      installPhase = ''
-        mkdir -p $out/bin
-        makeWrapper ${python-with-fabric}/bin/python $out/bin/python-with-ax-shell-env
-      '';
-    })
-    # =========================================================================================
+      # Теперь правильно конструируем итоговую переменную, помещая все в кавычки.
+      export GI_TYPELIB_PATH="$GI_TYPELIB_PATH_PREFIX''${GI_TYPELIB_PATH:+:}$GI_TYPELIB_PATH"
+      export XDG_DATA_DIRS="$XDG_DATA_DIRS_PREFIX''${XDG_DATA_DIRS:+:}$XDG_DATA_DIRS"
+
+      # Запускаем наш специально собранный Python, передавая ему все аргументы.
+      exec "${python-with-fabric}/bin/python" "$@"
+    '')
+    # =================================================================================================
   ];
 }
