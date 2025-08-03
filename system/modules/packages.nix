@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 let
   # Шаг 1: Определяем все системные C-библиотеки, которые нам нужны.
@@ -70,7 +70,7 @@ in
     webp-pixbuf-loader
     wl-clipboard
 
-    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (makeWrapper) =======================
+    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (makeWrapper v2) =======================
     # Шаг 3: Создаем derivation, который использует makeWrapper для создания обертки
     (stdenv.mkDerivation {
       name = "python-with-ax-shell-env";
@@ -81,7 +81,7 @@ in
       installPhase = ''
         mkdir -p $out/bin
         makeWrapper ${python-with-fabric}/bin/python $out/bin/python-with-ax-shell-env \
-          --prefix GI_TYPELIB_PATH : "${lib.makeSearchPathOutput "lib/girepository-1.0" gtk-dependencies}" \
+          --prefix GI_TYPELIB_PATH : "${lib.makeSearchPath "lib/girepository-1.0" gtk-dependencies}" \
           --prefix XDG_DATA_DIRS : "${lib.makeSearchPath "share" gtk-dependencies}"
       '';
     })
