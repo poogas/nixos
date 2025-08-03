@@ -10,9 +10,10 @@
     # Настройки, которые вы нашли. Они определяют поведение при бездействии.
     settings = {
       general = {
-        lock_cmd = "pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock"; # Явно указываем путь
+        # === ИСПРАВЛЕНИЕ 1: Правильный путь к hyprctl ===
+        lock_cmd = "pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock";
         before_sleep_cmd = "loginctl lock-session";
-        after_sleep_cmd = "${pkgs.hyprctl}/bin/hyprctl dispatch dpms on";
+        after_sleep_cmd = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
         ignore_dbus_inhibit = false;
       };
 
@@ -29,10 +30,10 @@
         }
         {
           timeout = 600; # через 10 минут
-          on-timeout = "${pkgs.hyprctl}/bin/hyprctl dispatch dpms off"; # выключить экран
-          on-resume = "${pkgs.hyprctl}/bin/hyprctl dispatch dpms on"; # включить экран
+          # === ИСПРАВЛЕНИЕ 2: Правильный путь к hyprctl ===
+          on-timeout = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off"; # выключить экран
+          on-resume = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on"; # включить экран
         }
-        # Осторожно с suspend, может вызывать проблемы на некотором железе
         # {
         #   timeout = 1200; # через 20 минут
         #   on-timeout = "systemctl suspend"; # уйти в сон
