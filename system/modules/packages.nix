@@ -73,9 +73,6 @@ in
   ];
 
   environment.systemPackages = with pkgs; [
-    # Ваши основные утилиты
-    neovim git telegram-desktop
-
     # Зависимости ax-shell
     brightnessctl cava cliphist gpu-screen-recorder-gtk hypridle hyprlock
     hyprpicker hyprshot hyprsunset imagemagick libnotify nvtopPackages.nvidia

@@ -48,17 +48,11 @@
   # 6. Системные пакеты для окружения Hyprland
   environment.systemPackages = with pkgs; [
     # Утилиты для Wayland
-    waybar       # Статус-бар
     wofi         # Лаунчер приложений
     mako         # Демон уведомлений
-    swaylock     # Блокировщик экрана
-    swayidle     # Управление бездействием (для блокировки)
     grim         # Создание скриншотов
     slurp        # Выделение области экрана (для grim)
     wl-clipboard # Утилита для буфера обмена в Wayland
-    
-    # Терминал
-    alacritty
 
     # Шрифты и иконки
     noto-fonts
