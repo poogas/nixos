@@ -70,18 +70,21 @@ in
     webp-pixbuf-loader
     wl-clipboard
 
-    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (v5) =======================
-    # Шаг 3: Создаем скрипт-обертку, используя явную конкатенацию строк.
-    # Это гарантирует, что все функции будут выполнены ПЕРЕД созданием скрипта.
-    (pkgs.writeShellScriptBin "python-with-ax-shell-env" (
-      ''
-        #!${pkgs.stdenv.shell}
-      '' + ''
-        export GI_TYPELIB_PATH="${pkgs.lib.makeSearchPathOutput "lib/girepository-1.0" gtk-dependencies}''${GI_TYPELIB_PATH:+:}$GI_TYPELIB_PATH"
-        export XDG_DATA_DIRS="${pkgs.lib.makeSearchPath "share" gtk-dependencies}''${XDG_DATA_DIRS:+:}$XDG_DATA_DIRS"
-        exec "${python-with-fabric}/bin/python" "$@"
-      ''
-    ))
-    # =======================================================================
+    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (makeWrapper) =======================
+    # Шаг 3: Создаем derivation, который использует makeWrapper для создания обертки
+    (stdenv.mkDerivation {
+      name = "python-with-ax-shell-env";
+      nativeBuildInputs = [ makeWrapper ]; # Указываем, что нам нужен makeWrapper
+      dontUnpack = true; # Нам не нужны исходники, мы просто создаем скрипт
+
+      # Команды, которые будут выполнены для "сборки" нашего пакета
+      installPhase = ''
+        mkdir -p $out/bin
+        makeWrapper ${python-with-fabric}/bin/python $out/bin/python-with-ax-shell-env \
+          --prefix GI_TYPELIB_PATH : "${lib.makeSearchPathOutput "lib/girepository-1.0" gtk-dependencies}" \
+          --prefix XDG_DATA_DIRS : "${lib.makeSearchPath "share" gtk-dependencies}"
+      '';
+    })
+    # ==============================================================================
   ];
 }
