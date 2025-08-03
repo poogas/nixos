@@ -1,37 +1,21 @@
 { pkgs, lib, inputs, ... }:
 
 let
-  # Пакет для fabric-cli, собранный из Flake input
-  fabric-cli-pkg = pkgs.stdenv.mkDerivation (finalAttrs: {
+  # Пакет для fabric-cli, собранный с помощью buildGoModule
+  fabric-cli-pkg = pkgs.buildGoModule {
     pname = "fabric-cli-go";
     version = "git";
     src = inputs.fabric-cli;
 
-    nativeBuildInputs = with pkgs; [ go meson ninja ];
-
-    # === ИСПРАВЛЕНИЕ ЗДЕСЬ: Используем preBuild hook ===
-    # Этот код будет выполнен ПЕРЕД запуском основной команды сборки (buildPhase).
-    preBuild = ''
-      export HOME=$(mktemp -d)
-      export GOCACHE=$HOME/go-cache
-    '';
-
-    # Фаза установки остается без изменений.
-    installPhase = ''
-      runHook preInstall
-      meson install -C build --destdir $out
-      runHook postInstall
-    '';
-    
-    # Мы используем стандартную mesonBuildPhase, но с исправленным окружением.
-    # Я убрал ручной вызов meson, чтобы Nix использовал стандартные фазы, что надежнее.
+    # === КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: Правильное имя аргумента ===
+    vendorHash = "sha256-3ToIL4MmpMBbN8wTaV3UxMbOAcZY8odqJyWpQ7jkXOc=";
 
     meta = with lib; {
       description = "A CLI utility for Fabric written in Go";
       homepage = "https://github.com/Fabric-Development/fabric-cli";
       license = licenses.gpl3Plus;
     };
-  });
+  };
 
   # Ваша рабочая обертка для Python
   python-gtk-env = (pkgs.writeShellScriptBin "python-gtk-env" ''
