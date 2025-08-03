@@ -20,10 +20,14 @@
       flake = false; # <--- КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ
     };
     # =================================================================
+    gray = {
+      url = "github:Fabric-Development/gray";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # Мы добавляем `fabric-cli` в аргументы функции, чтобы иметь к нему доступ.
-  outputs = { self, nixpkgs, home-manager, hyprland, fabric, fabric-cli, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, hyprland, fabric, fabric-cli, gray, ... }@inputs:
     let
       nix-hosts = {
         "qwerty" = {

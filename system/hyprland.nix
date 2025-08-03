@@ -7,6 +7,7 @@
     enable = true;
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     xwayland.enable = true;
+    withUWSM = true;
   };
 
   # 2. Настраиваем графический вход через SDDM
