@@ -1,22 +1,9 @@
 { pkgs, lib, ... }:
 
 let
-  # Шаг 1: Определяем все системные C-библиотеки, которые нам нужны.
-  gtk-dependencies = with pkgs; [
-    gtk3
-    gobject-introspection
-    cairo
-    gdk-pixbuf
-    gtk-layer-shell
-    libdbusmenu-gtk3
-    cinnamon-desktop
-    gnome-bluetooth
-    vte
-    librsvg
-  ];
-
-  # Шаг 2: Создаем интерпретатор Python со всеми нужными ему Python-библиотеками.
-  python-with-fabric = pkgs.python312.withPackages (ps: with ps; [
+  # Шаг 1: Создаем наш специальный Python-интерпретатор со всеми нужными ему пакетами.
+  # Это будет одним из "кирпичиков" для финального пакета.
+  python-with-all-packages = pkgs.python312.withPackages (ps: with ps; [
     python-fabric
     pygobject3
     ijson
@@ -28,6 +15,10 @@ let
     setproctitle
     toml
     watchdog
+    # Дополнительные пакеты, которые мы видим в devShell файла fabric/flake.nix
+    click
+    pycairo
+    loguru
   ]);
 
 in
@@ -47,7 +38,7 @@ in
     git
     telegram-desktop
 
-    # Утилиты для ax-shell, которые являются отдельными командами
+    # Утилиты для ax-shell
     brightnessctl
     cava
     cliphist
@@ -71,21 +62,46 @@ in
     webp-pixbuf-loader
     wl-clipboard
 
-    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (Прямой подход) =======================
-    # Шаг 3: Создаем скрипт-обертку, который вручную устанавливает переменные.
-    # Это самый надежный и явный метод.
-    (pkgs.writeShellScriptBin "python-gtk-env" ''
-      #!${pkgs.stdenv.shell}
+    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (по образу run-widget.nix) =======================
+    # Создаем наш финальный пакет-обертку.
+    (pkgs.stdenv.mkDerivation {
+      name = "python-gtk-environment";
+      
+      # В buildInputs мы кладем ВСЕ: и Python, и все GTK-библиотеки.
+      # Это позволяет setup-hook'ам из gobject-introspection и других пакетов
+      # правильно подготовить среду сборки.
+      buildInputs = [ python-with-all-packages ] ++ (with pkgs; [
+        gtk3
+        gtk-layer-shell
+        cairo
+        gobject-introspection
+        libdbusmenu-gtk3
+        gdk-pixbuf
+        gnome-bluetooth
+        cinnamon-desktop
+        librsvg
+        vte
+      ]);
+      
+      # Нам не нужны исходники, мы только пишем скрипт
+      dontUnpack = true;
 
-      # Устанавливаем переменную для поиска .typelib файлов.
-      export GI_TYPELIB_PATH="${lib.makeSearchPath "lib/girepository-1.0" gtk-dependencies}''${GI_TYPELIB_PATH:+:}$GI_TYPELIB_PATH"
-
-      # Устанавливаем переменную для поиска данных (иконки, схемы и т.д.)
-      export XDG_DATA_DIRS="${lib.makeSearchPath "share" gtk-dependencies}''${XDG_DATA_DIRS:+:}$XDG_DATA_DIRS"
-
-      # Запускаем наш специально собранный Python, передавая ему все аргументы.
-      exec "${python-with-fabric}/bin/python" "$@"
-    '')
+      # Фаза установки, которая в точности повторяет логику run-widget.nix
+      installPhase = ''
+        mkdir -p $out/bin
+        # Создаем наш исполняемый файл
+        cat > $out/bin/python-gtk-env << EOF
+        #!${pkgs.stdenv.shell}
+        # Захватываем переменные, подготовленные setup-hook'ами в среде сборки
+        export GI_TYPELIB_PATH="$GI_TYPELIB_PATH"
+        export GDK_PIXBUF_MODULE_FILE="$GDK_PIXBUF_MODULE_FILE"
+        # Запускаем Python из нашего специального окружения
+        exec ${python-with-all-packages}/bin/python "\$@"
+        EOF
+        # Делаем его исполняемым
+        chmod +x $out/bin/python-gtk-env
+      '';
+    })
     # =========================================================================================
   ];
 }
