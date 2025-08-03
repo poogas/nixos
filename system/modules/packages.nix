@@ -1,29 +1,55 @@
-{ pkgs, lib, ... }:
+# Важно: Добавляем `inputs` в аргументы модуля, чтобы получить доступ к fabric-cli
+{ pkgs, lib, inputs, ... }:
 
 let
-  # Шаг 1: Создаем наш специальный Python-интерпретатор со всеми нужными ему пакетами.
-  # Это будет одним из "кирпичиков" для финального пакета.
-  python-with-all-packages = pkgs.python312.withPackages (ps: with ps; [
-    python-fabric
-    pygobject3
-    ijson
-    numpy
-    pillow
-    psutil
-    pywayland
-    requests
-    setproctitle
-    toml
-    watchdog
-    # Дополнительные пакеты, которые мы видим в devShell файла fabric/flake.nix
-    click
-    pycairo
-    loguru
-  ]);
+  # --- НАШИ КАСТОМНЫЕ ПАКЕТЫ ---
+
+  # 1. Рабочая обертка для Python, которую мы успешно создали.
+  python-gtk-env = pkgs.stdenv.mkDerivation {
+    name = "python-gtk-environment";
+    buildInputs = [
+      (pkgs.python312.withPackages (ps: with ps; [
+        python-fabric pygobject3 ijson numpy pillow psutil pywayland requests
+        setproctitle toml watchdog click pycairo loguru
+      ]))
+    ] ++ (with pkgs; [
+      gtk3 gtk-layer-shell cairo gobject-introspection libdbusmenu-gtk3
+      gdk-pixbuf gnome-bluetooth cinnamon-desktop librsvg vte
+    ]);
+    dontUnpack = true;
+    installPhase = ''
+      mkdir -p $out/bin
+      cat > $out/bin/python-gtk-env << EOF
+      #!${pkgs.stdenv.shell}
+      export GI_TYPELIB_PATH="$GI_TYPELIB_PATH"
+      export GDK_PIXBUF_MODULE_FILE="$GDK_PIXBUF_MODULE_FILE"
+      exec ${pkgs.python312.withPackages (ps: with ps; [ python-fabric ])}/bin/python "\$@"
+      EOF
+      chmod +x $out/bin/python-gtk-env
+    '';
+  };
+
+  # 2. НОВЫЙ пакет для fabric-cli, собранный из Flake input
+  fabric-cli-pkg = pkgs.stdenv.mkDerivation {
+    pname = "fabric-cli-go";
+    version = "git";
+    src = inputs.fabric-cli; # Используем input, хеш не нужен
+    nativeBuildInputs = with pkgs; [ go meson ninja ];
+    installPhase = ''
+      meson setup --buildtype=release --prefix=$out build
+      meson install -C build
+    '';
+    meta = with lib; {
+      description = "A CLI utility for Fabric written in Go";
+      homepage = "https://github.com/Fabric-Development/fabric-cli";
+      license = licenses.gpl3Plus;
+    };
+  };
 
 in
 {
-  # Эти настройки остаются без изменений
+  # --- ОСНОВНАЯ ЧАСТЬ ВАШЕЙ КОНФИГУРАЦИИ ---
+
   programs.firefox.enable = true;
   programs.gpu-screen-recorder.enable = true;
   nixpkgs.config.allowUnfree = true;
@@ -31,14 +57,13 @@ in
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;
 
-  # Список системных пакетов
   environment.systemPackages = with pkgs; [
     # Ваши основные утилиты
     neovim
     git
     telegram-desktop
 
-    # Утилиты для ax-shell
+    # Основные зависимости ax-shell
     brightnessctl
     cava
     cliphist
@@ -62,46 +87,8 @@ in
     webp-pixbuf-loader
     wl-clipboard
 
-    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (по образу run-widget.nix) =======================
-    # Создаем наш финальный пакет-обертку.
-    (pkgs.stdenv.mkDerivation {
-      name = "python-gtk-environment";
-      
-      # В buildInputs мы кладем ВСЕ: и Python, и все GTK-библиотеки.
-      # Это позволяет setup-hook'ам из gobject-introspection и других пакетов
-      # правильно подготовить среду сборки.
-      buildInputs = [ python-with-all-packages ] ++ (with pkgs; [
-        gtk3
-        gtk-layer-shell
-        cairo
-        gobject-introspection
-        libdbusmenu-gtk3
-        gdk-pixbuf
-        gnome-bluetooth
-        cinnamon-desktop
-        librsvg
-        vte
-      ]);
-      
-      # Нам не нужны исходники, мы только пишем скрипт
-      dontUnpack = true;
-
-      # Фаза установки, которая в точности повторяет логику run-widget.nix
-      installPhase = ''
-        mkdir -p $out/bin
-        # Создаем наш исполняемый файл
-        cat > $out/bin/python-gtk-env << EOF
-        #!${pkgs.stdenv.shell}
-        # Захватываем переменные, подготовленные setup-hook'ами в среде сборки
-        export GI_TYPELIB_PATH="$GI_TYPELIB_PATH"
-        export GDK_PIXBUF_MODULE_FILE="$GDK_PIXBUF_MODULE_FILE"
-        # Запускаем Python из нашего специального окружения
-        exec ${python-with-all-packages}/bin/python "\$@"
-        EOF
-        # Делаем его исполняемым
-        chmod +x $out/bin/python-gtk-env
-      '';
-    })
-    # =========================================================================================
+    # Наши два кастомных, правильно собранных пакета
+    python-gtk-env
+    fabric-cli-pkg
   ];
 }
