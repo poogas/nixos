@@ -7,6 +7,6 @@
     ./starship.nix
     ./waybar.nix
     # ./ax-shell.nix
-    ./hypridle.nix
+    # ./hypridle.nix
   ];
 }
