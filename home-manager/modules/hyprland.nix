@@ -61,6 +61,6 @@
     };
   };
 
-  home.xdg.configFile."Ax-Shell/config.toml".text = builtins.readFile "${ax-shell-src}/config.toml";
-  home.xdg.configFile."Ax-Shell/style.css".text = builtins.readFile "${ax-shell-src}/style.css";
+  home.xdg.configFile."Ax-Shell/config.toml".text = builtins.readFile "${ax-shell-src}/config/config.toml";
+  home.xdg.configFile."Ax-Shell/style.css".text = builtins.readFile "${ax-shell-src}/config/style.css";
 }
