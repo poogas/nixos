@@ -4,7 +4,7 @@ let
   # Шаг 1: Определяем все системные C-библиотеки, которые нам нужны.
   gtk-dependencies = with pkgs; [
     gtk3
-    gobject-introspection
+    gobject-introspection # Пакет, чей setup hook нам нужен
     cairo
     gdk-pixbuf
     gtk-layer-shell
@@ -12,6 +12,7 @@ let
     cinnamon-desktop
     gnome-bluetooth
     vte
+    librsvg # Добавлено из run-widget.nix для полноты
   ];
 
   # Шаг 2: Создаем интерпретатор Python со всеми нужными ему Python-библиотеками.
@@ -70,21 +71,24 @@ in
     webp-pixbuf-loader
     wl-clipboard
 
-    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (makeWrapper v2) =======================
-    # Шаг 3: Создаем derivation, который использует makeWrapper для создания обертки
+    # ======================== ФИНАЛЬНОЕ РЕШЕНИЕ (mkDerivation done right) =======================
+    # Шаг 3: Создаем derivation, который позволяет автоматическим хукам NixOS сделать свою работу.
     (stdenv.mkDerivation {
       name = "python-with-ax-shell-env";
-      nativeBuildInputs = [ makeWrapper ]; # Указываем, что нам нужен makeWrapper
-      dontUnpack = true; # Нам не нужны исходники, мы просто создаем скрипт
+      
+      # Передаем GTK-зависимости в buildInputs. Это позволяет их setup-hook'ам
+      # автоматически обернуть все, что мы создаем в installPhase.
+      nativeBuildInputs = [ makeWrapper ] ++ gtk-dependencies;
+      
+      dontUnpack = true;
 
-      # Команды, которые будут выполнены для "сборки" нашего пакета
+      # В installPhase мы просто создаем скрипт-обертку.
+      # Автоматические хуки сами добавят нужные export'ы переменных окружения.
       installPhase = ''
         mkdir -p $out/bin
-        makeWrapper ${python-with-fabric}/bin/python $out/bin/python-with-ax-shell-env \
-          --prefix GI_TYPELIB_PATH : "${lib.makeSearchPath "lib/girepository-1.0" gtk-dependencies}" \
-          --prefix XDG_DATA_DIRS : "${lib.makeSearchPath "share" gtk-dependencies}"
+        makeWrapper ${python-with-fabric}/bin/python $out/bin/python-with-ax-shell-env
       '';
     })
-    # ==============================================================================
+    # =========================================================================================
   ];
 }
