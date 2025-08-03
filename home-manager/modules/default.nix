@@ -6,6 +6,6 @@
     ./packages.nix
     ./starship.nix
     ./waybar.nix
-    ./ax-shell.nix
+    # ./ax-shell.nix
   ];
 }
