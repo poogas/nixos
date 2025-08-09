@@ -4,8 +4,6 @@
 
 let
   # === ШАГ 1: Локально собираем python-fabric ===
-  # Мы определяем его здесь как локальную переменную, используя `pkgs`,
-  # которые уже доступны. Это полностью избегает рекурсии.
   python-fabric = pkgs.python311Packages.buildPythonPackage {
     pname = "python-fabric";
     version = "unstable";
@@ -23,8 +21,11 @@ let
       gtk3
       gtk-layer-shell
       libdbusmenu-gtk3
-      cinnamon.cinnamon-desktop
-      gnome.gnome-bluetooth
+      # === ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ: Убираем устаревшие "scope" ===
+      # Пакеты cinnamon-desktop и gnome-bluetooth теперь находятся
+      # на верхнем уровне в `pkgs`, а не внутри `pkgs.cinnamon` или `pkgs.gnome`.
+      cinnamon-desktop
+      gnome-bluetooth
     ] ++ (with pkgs.python311Packages; [
       setuptools
       click
@@ -38,8 +39,6 @@ let
   };
 
   # === ШАГ 2: Создаем окружение Python с помощью `withPackages` ===
-  # Теперь это работает, потому что `withPackages` может напрямую
-  # использовать нашу локальную переменную `python-fabric`.
   pythonEnv = pkgs.python311.withPackages (ps: [
     python-fabric  # <--- Наша локальная переменная
   ] ++ (with ps; [
