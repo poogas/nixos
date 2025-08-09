@@ -1,5 +1,3 @@
-# /etc/nixos/system/modules/packages.nix
-
 { pkgs, lib, inputs, ... }:
 
 let
@@ -38,8 +36,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "Fabric-Development";
       repo = "fabric";
-      rev = "1134b7f96ecc54d2626788ad59b4717ed86e5cf4";
-      sha256 = "sha256-t+tb+0isS/AloTd+HUkCvfpNXOl6RkkenIPxMsk++LA=";
+      rev = "02be1e1ea7e99e3cd0d70bed510ceb95813d4a67";
+      sha256 = "sha256-7cFgHMZeurf9HcjVdZflvhOuVkGGALUqzLlEDsC2g0c=";
     };
 
     nativeBuildInputs = with pkgs; [
