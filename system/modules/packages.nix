@@ -3,63 +3,71 @@
 { pkgs, lib, inputs, ... }:
 
 let
-  # === ШАГ 1: Локально собираем python-fabric ===
-  python-fabric = pkgs.python311Packages.buildPythonPackage {
-    pname = "python-fabric";
-    version = "unstable";
-    pyproject = true;
-    src = inputs.fabric;
+  # === ШАГ 1: Локально собираем libcvc (Cinnamon Volume Control) ===
+  libcvc = pkgs.stdenv.mkDerivation (finalAttrs: {
+    pname = "libcvc-gir";
+    version = "unstable-from-cinnamon";
 
-    nativeBuildInputs = with pkgs; [
-      pkg-config
-      wrapGAppsHook3
-      gobject-introspection
-      cairo
+    src = pkgs.fetchgit {
+      url = "https://github.com/linuxmint/cinnamon-desktop";
+      rev = "6.2.0";
+      hash = "sha256-9uewZh0GHQAenTcZpLchgFXSt3vOhxLbaepsJIkjTdI=";
+    };
+
+    postPatch = ''
+      sed -i "s/subdir('install-scripts')/# subdir('install-scripts')/" meson.build
+      sed -i "s/subdir('po')/# subdir('po')/" meson.build
+      sed -i "s/subdir('libcinnamon-desktop')/# subdir('libcinnamon-desktop')/" meson.build
+      sed -i "s/subdir('schemas')/# subdir('schemas')/" meson.build
+    '';
+
+    nativeBuildInputs = with pkgs; [ meson ninja pkg-config gobject-introspection ];
+    buildInputs = with pkgs; [
+      gdk-pixbuf gtk3 libpulseaudio systemd xkeyboard_config xorg.libxkbfile
     ];
 
-    propagatedBuildInputs = with pkgs; [
-      gtk3
-      gtk-layer-shell
-      libdbusmenu-gtk3
-      # === ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ: Убираем устаревшие "scope" ===
-      # Пакеты cinnamon-desktop и gnome-bluetooth теперь находятся
-      # на верхнем уровне в `pkgs`, а не внутри `pkgs.cinnamon` или `pkgs.gnome`.
-      cinnamon-desktop
-      gnome-bluetooth
-    ] ++ (with pkgs.python311Packages; [
-      setuptools
-      click
-      pycairo
-      pygobject3
-      loguru
-      psutil
-    ]);
+    doCheck = false;
+  });
 
+  # === ШАГ 2: Локально собираем python-fabric с зафиксированной версией ===
+  python-fabric = pkgs.python312Packages.buildPythonPackage {
+    pname = "python-fabric";
+    version = "unstable-pinned";
+    pyproject = true;
+    
+    src = pkgs.fetchFromGitHub {
+      owner = "Fabric-Development";
+      repo = "fabric";
+      rev = "1134b7f96ecc54d2626788ad59b4717ed86e5cf4";
+      sha256 = "sha256-t+tb+0isS/AloTd+HUkCvfpNXOl6RkkenIPxMsk++LA=";
+    };
+
+    nativeBuildInputs = with pkgs; [
+      pkg-config wrapGAppsHook3 gobject-introspection cairo
+    ];
+    propagatedBuildInputs = with pkgs; [
+      gtk3 gtk-layer-shell libdbusmenu-gtk3 cinnamon-desktop gnome-bluetooth
+      libcvc
+    ] ++ (with pkgs.python312Packages; [
+      setuptools click pycairo pygobject3 loguru psutil
+    ]);
     doCheck = false;
   };
 
-  # === ШАГ 2: Создаем окружение Python с помощью `withPackages` ===
-  pythonEnv = pkgs.python311.withPackages (ps: [
-    python-fabric  # <--- Наша локальная переменная
+  # === ШАГ 3: Создаем окружение Python 3.12 ===
+  pythonEnv = pkgs.python312.withPackages (ps: [
+    python-fabric
   ] ++ (with ps; [
-    pygobject3
-    ijson
-    numpy
-    pillow
-    pywayland
-    requests
-    setproctitle
-    toml
-    watchdog
+    pygobject3 ijson numpy pillow pywayland requests setproctitle toml watchdog
   ]));
 
-  # === ШАГ 3: Создаем лаунчер ===
+  # === ШАГ 4: Создаем финальный лаунчер ===
   ax-shell-launcher = pkgs.stdenv.mkDerivation {
-    name = "ax-shell-launcher-finally-working";
+    name = "ax-shell-launcher-with-cvc";
     nativeBuildInputs = [ pkgs.wrapGAppsHook3 ];
     buildInputs = [ pythonEnv ] ++ (with pkgs; [
       glib gtk3 gtk-layer-shell cairo gobject-introspection libdbusmenu-gtk3
-      gdk-pixbuf
+      gdk-pixbuf libcvc
     ]);
     dontUnpack = true;
     installPhase = ''
@@ -109,6 +117,7 @@ in
     webp-pixbuf-loader wl-clipboard matugen grimblast
     ax-shell-launcher
     fabric-cli-pkg
+    # === ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ: Правильное имя архитектуры ===
     inputs.gray.packages."x86_64-linux".default
     wlinhibit
     uwsm
