@@ -59,7 +59,7 @@
 
             ({ config, pkgs, ... }: {
               nixpkgs.overlays = [
-                inputs.fabric.overlays.${hostConfig.system}.default
+		(import ./system/overlay.nix)
               ];
             })
 

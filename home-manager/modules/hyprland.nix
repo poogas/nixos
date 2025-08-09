@@ -55,7 +55,7 @@
         "$mainMod SHIFT, 3, movetoworkspace, 3"
       ];
       exec-once = [
-        "ax-shell-launcher"
+	"ax-shell-launcher &> $HOME/ax-shell.log"
       ];
     };
   };

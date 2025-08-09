@@ -1,48 +1,53 @@
+# /etc/nixos/system/modules/packages.nix
+
 { pkgs, lib, inputs, ... }:
 
 let
-  # === ШАГ 1: Мы создаем ОДИН, ПОЛНЫЙ, самодостаточный пакет-лаунчер ===
-  # Этот подход использует ваше открытие - `wrapGAppsHook`.
-  ax-shell-launcher =
-    pkgs.stdenv.mkDerivation {
-      name = "ax-shell-launcher-the-final-one";
+  # === ШАГ 1: Создаем окружение с помощью `withPackages` ===
+  # Теперь, когда `python-fabric` правильно добавлен через оверлей,
+  # этот метод будет работать идеально.
+  pythonEnv = (pkgs.python311.withPackages (ps: with ps; [
+    python-fabric # <--- Наш новый, правильно собранный пакет
+    pygobject3
+    ijson
+    numpy
+    pillow
+    psutil
+    pywayland
+    requests
+    setproctitle
+    toml
+    watchdog
+    click
+    pycairo
+    loguru
+  ]));
 
-      # `wrapGAppsHook3` автоматически обернет все исполняемые файлы.
-      nativeBuildInputs = [ pkgs.wrapGAppsHook3 ];
+  # === ШАГ 2: Создаем лаунчер ===
+  ax-shell-launcher = pkgs.stdenv.mkDerivation {
+    name = "ax-shell-launcher-from-working-example";
 
-      # В `buildInputs` мы передаем ВСЕ зависимости. `wrapGAppsHook`
-      # использует их для автоматической настройки ВСЕХ переменных.
-      buildInputs = [
-        # 1. Наше Python-окружение, которое включает `python-fabric`.
-        (pkgs.python311.withPackages (ps: with ps; [
-          python-fabric
-          pygobject3 ijson numpy pillow psutil pywayland requests
-          setproctitle toml watchdog click pycairo loguru
-        ]))
-        # 2. Все системные C-библиотеки для GTK.
-      ] ++ (with pkgs; [
-        glib
-        gtk3 gtk-layer-shell cairo gobject-introspection libdbusmenu-gtk3
-        gdk-pixbuf gnome-bluetooth cinnamon-desktop librsvg vte
-      ]);
+    nativeBuildInputs = [ pkgs.wrapGAppsHook3 ];
 
-      dontUnpack = true;
+    buildInputs = [ pythonEnv ] ++ (with pkgs; [
+      glib
+      gtk3 gtk-layer-shell cairo gobject-introspection libdbusmenu-gtk3
+      gdk-pixbuf gnome-bluetooth cinnamon-desktop librsvg vte
+    ]);
 
-      # В фазе установки мы создаем наш финальный скрипт.
-      # Он будет автоматически обернут хуком.
-      installPhase = ''
-        mkdir -p $out/bin
-        cat > $out/bin/ax-shell-launcher << EOF
-        #!${pkgs.stdenv.shell}
-        # === ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ: Убираем сломанное логирование ===
-        # Теперь скрипт просто запускает приложение, как и должен.
-        exec python ${inputs.ax-shell-src}/main.py
-        EOF
-        chmod +x $out/bin/ax-shell-launcher
-      '';
-    };
+    dontUnpack = true;
 
-  # Остальные ваши пакеты.
+    installPhase = ''
+      mkdir -p $out/bin
+      cat > $out/bin/ax-shell-launcher << EOF
+      #!${pkgs.stdenv.shell}
+      exec ${pythonEnv}/bin/python ${inputs.ax-shell-src}/main.py
+      EOF
+      chmod +x $out/bin/ax-shell-launcher
+    '';
+  };
+
+  # Остальные ваши пакеты (не относящиеся к fabric).
   fabric-cli-pkg = pkgs.buildGoModule {
     pname = "fabric-cli-go";
     version = "git";
