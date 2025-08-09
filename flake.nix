@@ -1,39 +1,30 @@
+# /etc/nixos/flake.nix
+
 {
   description = "NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     fabric.url = "github:Fabric-Development/fabric";
-
-    # ======================== ИСПРАВЛЕННЫЙ БЛОК ========================
-    # Добавляем fabric-cli как "вход", но явно указываем, что это НЕ Flake.
     fabric-cli = {
       url = "github:Fabric-Development/fabric-cli";
-      flake = false; # <--- КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ
+      flake = false;
     };
-    # =================================================================
     gray = {
       url = "github:Fabric-Development/gray";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Добавляем исходники Ax-Shell как input, который не является Flake
     ax-shell-src = {
       url = "github:Axenide/Ax-Shell";
       flake = false;
     };
   };
 
-  # Мы добавляем `fabric-cli` в аргументы функции, чтобы иметь к нему доступ.
-  outputs = { self, nixpkgs, home-manager, hyprland, fabric, fabric-cli, gray, ax-shell-src, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
       nix-hosts = {
         "qwerty" = {
@@ -45,24 +36,35 @@
       };
 
       makeSystem = { hostname, hostConfig }:
+        let
+          # Мы по-прежнему создаем `pkgs` заранее, это правильная часть.
+          pkgs = import nixpkgs {
+            system = hostConfig.system;
+            config.allowUnfree = true;
+            overlays = [
+              inputs.fabric.overlays.${hostConfig.system}.default
+            ];
+          };
+        in
         nixpkgs.lib.nixosSystem {
           system = hostConfig.system;
 
+          # === ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ: Используем "официальный" метод ===
+          # Мы убираем `pkgs` из `specialArgs`, чтобы не вызывать предупреждение.
           specialArgs = {
-            inherit inputs;
+            inherit inputs; # `pkgs` здесь больше нет
             hostname = hostname;
             username = hostConfig.username;
             stateVersion = hostConfig.systemStateVersion;
           };
 
           modules = [
-            ./system/configuration.nix
+            # Подключаем специальный модуль, как просит нас предупреждение.
+            nixpkgs.nixosModules.readOnlyPkgs
+            # И передаем наш `pkgs` через него.
+            { nixpkgs.pkgs = pkgs; }
 
-	    ({ config, pkgs, ... }: {
-	      nixpkgs.overlays = [
-	      inputs.fabric.overlays.${hostConfig.system}.default
-	      ];
-	    })
+            ./system/configuration.nix
 
             home-manager.nixosModules.home-manager
             {
@@ -74,8 +76,9 @@
                 inherit inputs;
                 username = hostConfig.username;
                 homeStateVersion = hostConfig.homeStateVersion;
-                hyprland-pkg = inputs.hyprland.packages.${hostConfig.system}.hyprland;
-		ax-shell-src = inputs.ax-shell-src;
+                # `pkgs` теперь доступен внутри модулей, так что это работает.
+                hyprland-pkg = pkgs.hyprland;
+                ax-shell-src = inputs.ax-shell-src;
               };
 
               home-manager.users."${hostConfig.username}" = {

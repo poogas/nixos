@@ -7,7 +7,7 @@
     ./hosts.nix
     ./hyprland.nix
 
-    inputs.hyprland.nixosModules.default
+    # inputs.hyprland.nixosModules.default
 
     ./modules
   ];

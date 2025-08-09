@@ -5,7 +5,8 @@
   # 1. Включаем Hyprland и основные программы
   programs.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    package = pkgs.hyprland;
     xwayland.enable = true;
     withUWSM = true;
   };
@@ -13,7 +14,7 @@
   # 2. Настраиваем графический вход через SDDM
   services.displayManager = {
     # Отключаем GDM от GNOME
-    gdm.enable = false;
+    # gdm.enable = false;
     # Включаем SDDM
     sddm = {
       enable = true;
