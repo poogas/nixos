@@ -36,34 +36,18 @@
       };
 
       makeSystem = { hostname, hostConfig }:
-        let
-          # Мы по-прежнему создаем `pkgs` заранее, это правильная часть.
-          pkgs = import nixpkgs {
-            system = hostConfig.system;
-            config.allowUnfree = true;
-            overlays = [
-              inputs.fabric.overlays.${hostConfig.system}.default
-            ];
-          };
-        in
         nixpkgs.lib.nixosSystem {
           system = hostConfig.system;
 
-          # === ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ: Используем "официальный" метод ===
-          # Мы убираем `pkgs` из `specialArgs`, чтобы не вызывать предупреждение.
+          # specialArgs больше не нужны, NixOS передаст все сама.
           specialArgs = {
-            inherit inputs; # `pkgs` здесь больше нет
+            inherit inputs;
             hostname = hostname;
             username = hostConfig.username;
             stateVersion = hostConfig.systemStateVersion;
           };
 
           modules = [
-            # Подключаем специальный модуль, как просит нас предупреждение.
-            nixpkgs.nixosModules.readOnlyPkgs
-            # И передаем наш `pkgs` через него.
-            { nixpkgs.pkgs = pkgs; }
-
             ./system/configuration.nix
 
             home-manager.nixosModules.home-manager
@@ -72,12 +56,11 @@
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "hm-backup";
 
+              # Мы убираем отсюда сложную передачу hyprland-pkg
               home-manager.extraSpecialArgs = {
                 inherit inputs;
                 username = hostConfig.username;
                 homeStateVersion = hostConfig.homeStateVersion;
-                # `pkgs` теперь доступен внутри модулей, так что это работает.
-                hyprland-pkg = pkgs.hyprland;
                 ax-shell-src = inputs.ax-shell-src;
               };
 

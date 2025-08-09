@@ -1,11 +1,16 @@
-{ hyprland-pkg, ... }:
+# /etc/nixos/home-manager/modules/hyprland.nix
+
+# Мы больше не принимаем `hyprland-pkg`, а принимаем стандартный `pkgs`.
+{ pkgs, ... }:
 
 {
   wayland.windowManager.hyprland = {
     enable = true;
-    package = hyprland-pkg;
+    # Мы берем hyprland напрямую из `pkgs`, который доступен в Home Manager.
+    package = pkgs.hyprland;
 
     settings = {
+      # ... (все ваши настройки остаются без изменений)
       env = "XCURSOR_SIZE,24";
       input = {
         kb_layout = "us,ru";
@@ -20,7 +25,6 @@
         "col.inactive_border" = "rgba(595959aa)";
         layout = "dwindle";
       };
-
       decoration = {
         rounding = 10;
         blur = {
@@ -28,11 +32,8 @@
           size = 3;
           passes = 1;
         };
-
       };
-
       animations.enabled = true;
-
       "$mainMod" = "SUPER";
       bind = [
         "$mainMod, Q, exec, alacritty"
