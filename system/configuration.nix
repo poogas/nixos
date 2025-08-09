@@ -6,7 +6,6 @@
     ./nvidia.nix
     ./hosts.nix
     ./hyprland.nix
-    ./overlay.nix
 
     inputs.hyprland.nixosModules.default
 

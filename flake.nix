@@ -57,11 +57,11 @@
           modules = [
             ./system/configuration.nix
 
-            ({ config, pkgs, ... }: {
-              nixpkgs.overlays = [
-		(import ./system/overlay.nix)
-              ];
-            })
+	    ({ config, pkgs, ... }: {
+	      nixpkgs.overlays = [
+	      inputs.fabric.overlays.${hostConfig.system}.default
+	      ];
+	    })
 
             home-manager.nixosModules.home-manager
             {

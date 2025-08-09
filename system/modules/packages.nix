@@ -3,40 +3,66 @@
 { pkgs, lib, inputs, ... }:
 
 let
-  # === ШАГ 1: Создаем окружение с помощью `withPackages` ===
-  # Теперь, когда `python-fabric` правильно добавлен через оверлей,
-  # этот метод будет работать идеально.
-  pythonEnv = (pkgs.python311.withPackages (ps: with ps; [
-    python-fabric # <--- Наш новый, правильно собранный пакет
+  # === ШАГ 1: Локально собираем python-fabric ===
+  # Мы определяем его здесь как локальную переменную, используя `pkgs`,
+  # которые уже доступны. Это полностью избегает рекурсии.
+  python-fabric = pkgs.python311Packages.buildPythonPackage {
+    pname = "python-fabric";
+    version = "unstable";
+    pyproject = true;
+    src = inputs.fabric;
+
+    nativeBuildInputs = with pkgs; [
+      pkg-config
+      wrapGAppsHook3
+      gobject-introspection
+      cairo
+    ];
+
+    propagatedBuildInputs = with pkgs; [
+      gtk3
+      gtk-layer-shell
+      libdbusmenu-gtk3
+      cinnamon.cinnamon-desktop
+      gnome.gnome-bluetooth
+    ] ++ (with pkgs.python311Packages; [
+      setuptools
+      click
+      pycairo
+      pygobject3
+      loguru
+      psutil
+    ]);
+
+    doCheck = false;
+  };
+
+  # === ШАГ 2: Создаем окружение Python с помощью `withPackages` ===
+  # Теперь это работает, потому что `withPackages` может напрямую
+  # использовать нашу локальную переменную `python-fabric`.
+  pythonEnv = pkgs.python311.withPackages (ps: [
+    python-fabric  # <--- Наша локальная переменная
+  ] ++ (with ps; [
     pygobject3
     ijson
     numpy
     pillow
-    psutil
     pywayland
     requests
     setproctitle
     toml
     watchdog
-    click
-    pycairo
-    loguru
   ]));
 
-  # === ШАГ 2: Создаем лаунчер ===
+  # === ШАГ 3: Создаем лаунчер ===
   ax-shell-launcher = pkgs.stdenv.mkDerivation {
-    name = "ax-shell-launcher-from-working-example";
-
+    name = "ax-shell-launcher-finally-working";
     nativeBuildInputs = [ pkgs.wrapGAppsHook3 ];
-
     buildInputs = [ pythonEnv ] ++ (with pkgs; [
-      glib
-      gtk3 gtk-layer-shell cairo gobject-introspection libdbusmenu-gtk3
-      gdk-pixbuf gnome-bluetooth cinnamon-desktop librsvg vte
+      glib gtk3 gtk-layer-shell cairo gobject-introspection libdbusmenu-gtk3
+      gdk-pixbuf
     ]);
-
     dontUnpack = true;
-
     installPhase = ''
       mkdir -p $out/bin
       cat > $out/bin/ax-shell-launcher << EOF
@@ -47,7 +73,7 @@ let
     '';
   };
 
-  # Остальные ваши пакеты (не относящиеся к fabric).
+  # Остальные ваши пакеты.
   fabric-cli-pkg = pkgs.buildGoModule {
     pname = "fabric-cli-go";
     version = "git";
@@ -76,23 +102,13 @@ in
   nixpkgs.config.allowUnfree = true;
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;
-
-  fonts.packages = with pkgs; [
-    noto-fonts-emoji
-    zed-sans-font
-  ];
-
+  fonts.packages = with pkgs; [ noto-fonts-emoji zed-sans-font ];
   environment.systemPackages = with pkgs; [
-    # Зависимости
     brightnessctl cava cliphist gpu-screen-recorder-gtk hypridle hyprlock
     hyprpicker hyprshot hyprsunset imagemagick libnotify nvtopPackages.nvidia
     playerctl power-profiles-daemon swappy swww tesseract tmux unzip upower
     webp-pixbuf-loader wl-clipboard matugen grimblast
-
-    # Наш финальный собранный пакет
     ax-shell-launcher
-
-    # Прочие
     fabric-cli-pkg
     inputs.gray.packages."x86_64-linux".default
     wlinhibit

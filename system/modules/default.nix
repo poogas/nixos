@@ -6,6 +6,5 @@
     ./localization.nix
     ./users.nix
     ./packages.nix
-    ./fabric.nix
   ];
 }
